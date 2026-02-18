@@ -26,75 +26,94 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const npm_config_save_dev: string;
+	export const SST_SERVER: string;
 	export const NVM_INC: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
-	export const INIT_CWD: string;
 	export const NVM_CD_FLAGS: string;
+	export const INIT_CWD: string;
 	export const TERM: string;
 	export const SHELL: string;
-	export const HOMEBREW_REPOSITORY: string;
 	export const TMPDIR: string;
+	export const HOMEBREW_REPOSITORY: string;
+	export const CONDA_SHLVL: string;
 	export const npm_config_global_prefix: string;
+	export const CONDA_PROMPT_MODIFIER: string;
 	export const TERM_PROGRAM_VERSION: string;
+	export const VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
+	export const AWS_SESSION_TOKEN: string;
 	export const MallocNanoZone: string;
-	export const npm_package_optional: string;
+	export const ZDOTDIR: string;
 	export const COLOR: string;
 	export const npm_config_noproxy: string;
 	export const npm_config_local_prefix: string;
-	export const NVM_DIR: string;
 	export const USER: string;
+	export const NVM_DIR: string;
+	export const _CONDA_EXE: string;
 	export const COMMAND_MODE: string;
+	export const CONDA_EXE: string;
 	export const npm_config_globalconfig: string;
-	export const npm_package_peer: string;
+	export const SST_STAGE: string;
+	export const OPENAI_KEY: string;
 	export const SSH_AUTH_SOCK: string;
 	export const __CF_USER_TEXT_ENCODING: string;
+	export const VSCODE_PROFILE_INITIALIZED: string;
 	export const npm_execpath: string;
-	export const npm_package_integrity: string;
+	export const _CE_CONDA: string;
 	export const PATH: string;
-	export const npm_package_json: string;
-	export const npm_config_engine_strict: string;
 	export const _: string;
-	export const LaunchInstanceID: string;
-	export const npm_config_userconfig: string;
-	export const npm_config_init_module: string;
+	export const npm_config_engine_strict: string;
+	export const npm_package_json: string;
 	export const __CFBundleIdentifier: string;
-	export const npm_command: string;
+	export const CONDA_PREFIX: string;
+	export const USER_ZDOTDIR: string;
+	export const npm_config_init_module: string;
+	export const npm_config_userconfig: string;
 	export const PWD: string;
-	export const VSCODE_NONCE: string;
-	export const npm_lifecycle_event: string;
+	export const npm_command: string;
+	export const AWS_SECRET_ACCESS_KEY: string;
 	export const EDITOR: string;
-	export const npm_package_name: string;
+	export const npm_lifecycle_event: string;
 	export const LANG: string;
-	export const npm_config_npm_version: string;
-	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+	export const npm_package_name: string;
+	export const SST_RESOURCE_MetarankBillingTable: string;
+	export const AWS_REGION: string;
 	export const XPC_FLAGS: string;
-	export const npm_package_dev: string;
+	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+	export const npm_config_npm_version: string;
+	export const FORCE_COLOR: string;
 	export const npm_config_node_gyp: string;
 	export const npm_package_version: string;
 	export const XPC_SERVICE_NAME: string;
-	export const npm_package_resolved: string;
-	export const SHLVL: string;
+	export const _CE_M: string;
+	export const _CONDA_ROOT: string;
+	export const AWS_ACCESS_KEY_ID: string;
+	export const VSCODE_INJECTION: string;
 	export const HOME: string;
+	export const SHLVL: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const HOMEBREW_PREFIX: string;
-	export const npm_package_dev_optional: string;
-	export const npm_config_cache: string;
 	export const LOGNAME: string;
+	export const CONDA_PYTHON_EXE: string;
+	export const npm_config_cache: string;
 	export const npm_lifecycle_script: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
+	export const SST_RESOURCE_MetarankUsers: string;
 	export const NVM_BIN: string;
+	export const CONDA_DEFAULT_ENV: string;
 	export const npm_config_user_agent: string;
-	export const VSCODE_GIT_ASKPASS_NODE: string;
-	export const GIT_ASKPASS: string;
-	export const INFOPATH: string;
+	export const SST_RESOURCE_App: string;
 	export const HOMEBREW_CELLAR: string;
+	export const INFOPATH: string;
+	export const GIT_ASKPASS: string;
+	export const VSCODE_GIT_ASKPASS_NODE: string;
+	export const SST_CHILD: string;
 	export const OSLogRateLimit: string;
-	export const SECURITYSESSIONID: string;
-	export const npm_node_execpath: string;
-	export const npm_config_prefix: string;
+	export const SST_RESOURCE_MetarankAPI: string;
 	export const COLORTERM: string;
+	export const npm_config_prefix: string;
+	export const npm_node_execpath: string;
+	export const NODE_ENV: string;
 }
 
 /**
@@ -107,7 +126,7 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	
+	export const PUBLIC_CLERK_PUBLISHABLE_KEY: string;
 }
 
 /**
@@ -124,75 +143,94 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		npm_config_save_dev: string;
+		SST_SERVER: string;
 		NVM_INC: string;
 		TERM_PROGRAM: string;
 		NODE: string;
-		INIT_CWD: string;
 		NVM_CD_FLAGS: string;
+		INIT_CWD: string;
 		TERM: string;
 		SHELL: string;
-		HOMEBREW_REPOSITORY: string;
 		TMPDIR: string;
+		HOMEBREW_REPOSITORY: string;
+		CONDA_SHLVL: string;
 		npm_config_global_prefix: string;
+		CONDA_PROMPT_MODIFIER: string;
 		TERM_PROGRAM_VERSION: string;
+		VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
+		AWS_SESSION_TOKEN: string;
 		MallocNanoZone: string;
-		npm_package_optional: string;
+		ZDOTDIR: string;
 		COLOR: string;
 		npm_config_noproxy: string;
 		npm_config_local_prefix: string;
-		NVM_DIR: string;
 		USER: string;
+		NVM_DIR: string;
+		_CONDA_EXE: string;
 		COMMAND_MODE: string;
+		CONDA_EXE: string;
 		npm_config_globalconfig: string;
-		npm_package_peer: string;
+		SST_STAGE: string;
+		OPENAI_KEY: string;
 		SSH_AUTH_SOCK: string;
 		__CF_USER_TEXT_ENCODING: string;
+		VSCODE_PROFILE_INITIALIZED: string;
 		npm_execpath: string;
-		npm_package_integrity: string;
+		_CE_CONDA: string;
 		PATH: string;
-		npm_package_json: string;
-		npm_config_engine_strict: string;
 		_: string;
-		LaunchInstanceID: string;
-		npm_config_userconfig: string;
-		npm_config_init_module: string;
+		npm_config_engine_strict: string;
+		npm_package_json: string;
 		__CFBundleIdentifier: string;
-		npm_command: string;
+		CONDA_PREFIX: string;
+		USER_ZDOTDIR: string;
+		npm_config_init_module: string;
+		npm_config_userconfig: string;
 		PWD: string;
-		VSCODE_NONCE: string;
-		npm_lifecycle_event: string;
+		npm_command: string;
+		AWS_SECRET_ACCESS_KEY: string;
 		EDITOR: string;
-		npm_package_name: string;
+		npm_lifecycle_event: string;
 		LANG: string;
-		npm_config_npm_version: string;
-		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+		npm_package_name: string;
+		SST_RESOURCE_MetarankBillingTable: string;
+		AWS_REGION: string;
 		XPC_FLAGS: string;
-		npm_package_dev: string;
+		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+		npm_config_npm_version: string;
+		FORCE_COLOR: string;
 		npm_config_node_gyp: string;
 		npm_package_version: string;
 		XPC_SERVICE_NAME: string;
-		npm_package_resolved: string;
-		SHLVL: string;
+		_CE_M: string;
+		_CONDA_ROOT: string;
+		AWS_ACCESS_KEY_ID: string;
+		VSCODE_INJECTION: string;
 		HOME: string;
+		SHLVL: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		HOMEBREW_PREFIX: string;
-		npm_package_dev_optional: string;
-		npm_config_cache: string;
 		LOGNAME: string;
+		CONDA_PYTHON_EXE: string;
+		npm_config_cache: string;
 		npm_lifecycle_script: string;
 		VSCODE_GIT_IPC_HANDLE: string;
+		SST_RESOURCE_MetarankUsers: string;
 		NVM_BIN: string;
+		CONDA_DEFAULT_ENV: string;
 		npm_config_user_agent: string;
-		VSCODE_GIT_ASKPASS_NODE: string;
-		GIT_ASKPASS: string;
-		INFOPATH: string;
+		SST_RESOURCE_App: string;
 		HOMEBREW_CELLAR: string;
+		INFOPATH: string;
+		GIT_ASKPASS: string;
+		VSCODE_GIT_ASKPASS_NODE: string;
+		SST_CHILD: string;
 		OSLogRateLimit: string;
-		SECURITYSESSIONID: string;
-		npm_node_execpath: string;
-		npm_config_prefix: string;
+		SST_RESOURCE_MetarankAPI: string;
 		COLORTERM: string;
+		npm_config_prefix: string;
+		npm_node_execpath: string;
+		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}
@@ -210,6 +248,7 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
+		PUBLIC_CLERK_PUBLISHABLE_KEY: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

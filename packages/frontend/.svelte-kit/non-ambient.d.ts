@@ -39,7 +39,7 @@ declare module "$app/types" {
 			"/generate": Record<string, never>;
 			"/pricing": Record<string, never>
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/api" | "/api/" | "/docs" | "/docs/" | "/generate" | "/generate/" | "/pricing" | "/pricing/";
+		Pathname(): "/" | "/about" | "/api" | "/docs" | "/generate" | "/pricing";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.svg" | string & {};
 	}

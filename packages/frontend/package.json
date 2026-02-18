@@ -63,6 +63,7 @@
 		"publint": "^0.3.13",
 		"reset.css": "^2.0.2",
 		"sanitize.css": "^13.0.0",
+		"sst": "^3.18.8",
 		"stylelint": "^16.25.0",
 		"stylelint-config-tailwindcss": "^1.0.0",
 		"svelte": "^5.39.5",

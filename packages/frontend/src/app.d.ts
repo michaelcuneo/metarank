@@ -3,7 +3,10 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			auth: import('svelte-clerk/server').ClerkAuth;
+			plan: 'free' | 'pro' | 'enterprise';
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

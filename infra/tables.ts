@@ -1,11 +1,11 @@
-const usersTable = new sst.aws.Dynamo("AIMUsers", {
+const usersTable = new sst.aws.Dynamo("MetarankUsers", {
   fields: {
     userId: "string",
   },
   primaryIndex: { hashKey: "userId" },
 });
 
-const usageSnapshotsTable = new sst.aws.Dynamo("AIMUsageSnapshots", {
+const usageSnapshotsTable = new sst.aws.Dynamo("MetarankUsageSnapshots", {
   fields: {
     projectId: "string",
     period: "string",
@@ -13,7 +13,7 @@ const usageSnapshotsTable = new sst.aws.Dynamo("AIMUsageSnapshots", {
   primaryIndex: { hashKey: "projectId", rangeKey: "period" },
 });
 
-const billingTable = new sst.aws.Dynamo("BillingTable", {
+const billingTable = new sst.aws.Dynamo("MetarankBillingTable", {
   fields: {
     userId: "string",
   },

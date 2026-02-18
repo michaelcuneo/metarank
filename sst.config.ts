@@ -4,7 +4,7 @@
 export default $config({
 	app(input) {
 		return {
-			name: 'seo-genius',
+			name: 'metarank',
 			removal: input?.stage === 'production' ? 'retain' : 'remove',
 			protect: ['production'].includes(input?.stage),
 			home: 'aws',
@@ -17,24 +17,11 @@ export default $config({
 		};
 	},
 	async run() {
-		const web = new sst.aws.SvelteKit('MyWeb', {
-			path: './packages/frontend',
-			domain: {
-				name: 'seo-genius.michaelcuneo.com.au'
-			},
-			permissions: [
-				{
-					actions: ['*'],
-					resources: ['*']
-				}
-			],
-			invalidation: {
-				paths: ['/*']
-			}
-		});
+		import ('./infra/config');
+		const web = await import('./infra/web');
 
     return {
-      web: web.url,
+      web: web.web.url,
     };
   },
 });

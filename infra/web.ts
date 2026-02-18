@@ -2,8 +2,8 @@ import { metarankApi } from "./api";
 import { OpenAIKey, ClerkPublishableKey } from "./config";
 import { usersTable, billingTable } from "./tables";
 
-export const web = new sst.aws.SvelteKit("MyWeb", {
-  path: "./apps/frontend",
+export const web = new sst.aws.SvelteKit("MetarankFrontend", {
+  path: "./packages/frontend",
   domain: {
     name: "metarank.dev",
   },

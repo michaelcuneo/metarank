@@ -2,7 +2,7 @@ import { usersTable, usageSnapshotsTable, billingTable } from "./tables";
 import { OpenAIKey, ClerkPublishableKey } from "./config";
 
 // Aim API
-const metarankApi = new sst.aws.ApiGatewayV2("AIMApi", {
+const metarankApi = new sst.aws.ApiGatewayV2("MetarankAPI", {
   link: [
     usersTable,
     usageSnapshotsTable,

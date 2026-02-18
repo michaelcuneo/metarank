@@ -6,35 +6,31 @@
 
 declare module "sst" {
   export interface Resource {
-    "AIMApi": {
+    "MetarankAPI": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
     }
-    "AIMUsageSnapshots": {
+    "MetarankBillingTable": {
       "name": string
       "type": "sst.aws.Dynamo"
     }
-    "AIMUsers": {
-      "name": string
-      "type": "sst.aws.Dynamo"
-    }
-    "BillingTable": {
-      "name": string
-      "type": "sst.aws.Dynamo"
-    }
-    "MyWeb": {
+    "MetarankFrontend": {
       "type": "sst.aws.SvelteKit"
       "url": string
     }
-    "OPENAI_API_KEY": {
+    "MetarankUsageSnapshots": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "MetarankUsers": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "OPENAI_KEY": {
       "type": "sst.sst.Secret"
       "value": string
     }
     "PUBLIC_CLERK_PUBLISHABLE_KEY": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "PUBLIC_CLERK_PUBLISHABLE_KEY_PROD": {
       "type": "sst.sst.Secret"
       "value": string
     }
