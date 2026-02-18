@@ -1,0 +1,10 @@
+{
+	"/": [],
+	"/about": [],
+	"/api": [
+		"src/routes/api/+server.ts"
+	],
+	"/docs": [],
+	"/generate": [],
+	"/pricing": []
+}

@@ -1,0 +1,127 @@
+:root {
+	/* Spacing */
+	--space-sm: 0.75rem;
+	--space-md: 1rem;
+	--space-lg: 1.5rem;
+
+	/* Radius */
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+	--radius-xl: 1rem;
+	--radius-2xl: 1.5rem;
+
+	/* Shadows (usable, still subtle) */
+	--shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.06), 0 1px 1px rgba(2, 6, 23, 0.04);
+	--shadow-md: 0 12px 28px rgba(2, 6, 23, 0.1), 0 2px 6px rgba(2, 6, 23, 0.06);
+
+	/* Core surfaces (cool “paper”) */
+	--color-bg: #f6f7fb; /* page background */
+	--color-surface: #ffffff; /* cards */
+	--color-elevated: #f1f4fa; /* forms / panels */
+
+	/* Text (slightly softer than pure slate) */
+	--color-text: #0b1220; /* primary */
+	--color-text-muted: #3a475b; /* secondary */
+	--color-text-subtle: #62718a; /* hints */
+
+	/* Borders (less harsh, slightly cooler) */
+	--color-border: rgba(15, 23, 42, 0.1);
+
+	/* Brand (cleaner, less “default Tailwind”) */
+	--primary-bg: #2b6fff;
+	--primary-hover: #2257ff;
+	--primary-text: #ffffff;
+
+	/* Secondary (better “button gray”) */
+	--secondary-bg: rgba(15, 23, 42, 0.06);
+	--secondary-hover: rgba(15, 23, 42, 0.1);
+	--secondary-text: #0b1220;
+
+	/* Ghost */
+	--ghost-bg-hover: rgba(43, 111, 255, 0.1);
+	--ghost-text: #2b6fff;
+
+	/* Danger */
+	--danger-bg: #e11d48;
+	--danger-hover: #be123c;
+	--danger-text: #ffffff;
+
+	/* Warning */
+	--warning-bg: #f59e0b;
+	--warning-hover: #d97706;
+	--warning-text: #111827;
+
+	/* Focus ring (more refined + accessible) */
+	--ring-color: rgba(43, 111, 255, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		/* Core surfaces: add real separation */
+		--color-bg: #070a10; /* page */
+		--color-surface: #0e1524; /* cards */
+		--color-elevated: #121c2e; /* inputs / panels */
+
+		/* Text: more readable hierarchy */
+		--color-text: rgba(255, 255, 255, 0.92);
+		--color-text-muted: rgba(255, 255, 255, 0.72);
+		--color-text-subtle: rgba(255, 255, 255, 0.56);
+
+		/* Borders: stop being invisible */
+		--color-border: rgba(255, 255, 255, 0.12);
+
+		/* Brand */
+		--primary-bg: #4c8dff;
+		--primary-hover: #2f6fff;
+		--primary-text: #081020;
+
+		/* Secondary */
+		--secondary-bg: rgba(255, 255, 255, 0.09);
+		--secondary-hover: rgba(255, 255, 255, 0.13);
+		--secondary-text: rgba(255, 255, 255, 0.92);
+
+		/* Ghost */
+		--ghost-bg-hover: rgba(76, 141, 255, 0.16);
+		--ghost-text: rgba(170, 205, 255, 0.95);
+
+		/* Focus ring */
+		--ring-color: rgba(76, 141, 255, 0.55);
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html: {
+	color-scheme: light dark;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	font-family: 'Cantarell', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Fjalla One', sans-serif;
+}
+
+:focus-visible {
+	outline: 2px solid var(--ring-color);
+	outline-offset: 2px;
+	border-color: var(--ring-color);
+	box-shadow: var(--shadow-md);
+}
+
+::selection {
+	background: rgba(43, 111, 255, 0.22);
+}
