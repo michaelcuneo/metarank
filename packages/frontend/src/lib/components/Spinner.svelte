@@ -1,31 +1,41 @@
 <script lang="ts">
-  let { 
-    size = '40px', 
-    color = '#3b82f6' 
-  } : {
-    size: string;
-    color: string;
-  } = $props();
+	let {
+		size = '32px',
+		color = 'var(--primary-bg)'
+	}: {
+		size?: string;
+		color?: string;
+	} = $props();
+
+	const thickness = '2px';
 </script>
 
-
 <div
-  aria-label="Loading"
-  role="status"
-  class="spinner"
-  style="width: {size}; height: {size}; border-top-color: {color};"></div>
-
+	class="spinner"
+	role="status"
+	aria-live="polite"
+	aria-label="Loading"
+	style="
+		width: {size};
+		height: {size};
+		border-top-color: {color};
+		border-width: {thickness};
+	"
+></div>
 
 <style>
-  .spinner {
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top-color: var(--primary-text);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    to {
-    transform: rotate(360deg);
-    }
-  }
+	.spinner {
+		border-style: solid;
+		border-color: var(--color-border);
+		border-top-color: var(--primary-bg);
+		border-radius: 50%;
+
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 </style>

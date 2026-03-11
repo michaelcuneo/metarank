@@ -27,7 +27,9 @@
 </script>
 
 <div class="input-group">
-	<label class="input-label" for={id || name}>{@render children?.()}</label>
+	{#if children}
+		<label class="input-label" for={id || name}>{@render children?.()}</label>
+	{/if}
 	<input
 		class="text-input"
 		{type}
@@ -60,6 +62,7 @@
 	.text-input {
 		width: 100%;
 		height: 2.25rem;
+		box-sizing: border-box;
 
 		font-family: inherit;
 		font-size: 0.875rem;
@@ -82,7 +85,7 @@
 	}
 
 	/* Focus */
-	.text-input:focus {
+	.text-input:focus-visible {
 		border-color: var(--ring-color);
 		box-shadow: 0 0 0 1px var(--ring-color);
 		background: var(--color-surface);

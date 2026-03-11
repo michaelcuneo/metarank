@@ -1,14 +1,13 @@
 {
-  "name": "metarank",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "dev": "npm run dev --workspaces",
-    "build": "npm run build --workspaces",
-    "lint": "npm run lint --workspaces",
-    "typecheck": "npm run typecheck --workspaces"
-  }
+	"name": "metarank",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"dev": "npm run dev --workspaces",
+		"build": "npm run build --workspaces",
+		"lint": "npm run lint --workspaces",
+		"typecheck": "npm run typecheck --workspaces"
+	}
 }

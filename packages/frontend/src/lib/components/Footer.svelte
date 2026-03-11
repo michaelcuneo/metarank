@@ -3,29 +3,28 @@
 		<div class="footer-brand">
 			<div class="logo">MetaRank</div>
 			<p class="tagline">
-				SEO metadata infrastructure for developers.
+				Predictable SEO metadata for developers and publishing systems.
 			</p>
 		</div>
 
-		<nav class="footer-nav">
+		<nav class="footer-nav" aria-label="Footer">
 			<div class="footer-group">
 				<div class="footer-title">Product</div>
 				<a href="/generate">Generate</a>
 				<a href="/pricing">Pricing</a>
+				<a href="/about">About</a>
+			</div>
+
+			<div class="footer-group">
+				<div class="footer-title">Developers</div>
 				<a href="/docs">Docs</a>
+				<a href="https://github.com/your-org/metarank" target="_blank" rel="noopener">
+					GitHub
+				</a>
 			</div>
 
 			<div class="footer-group">
 				<div class="footer-title">Company</div>
-				<a href="/about">About</a>
-				<a href="/login">Login</a>
-			</div>
-
-			<div class="footer-group">
-				<div class="footer-title">Resources</div>
-				<a href="https://github.com/your-org/metarank" target="_blank" rel="noopener">
-					GitHub
-				</a>
 				<a href="mailto:hello@metarank.io">Contact</a>
 			</div>
 		</nav>
@@ -34,15 +33,15 @@
 	<div class="footer-bottom">
 		<span>© {new Date().getFullYear()} MetaRank</span>
 		<span class="sep">·</span>
-		<span>Built for stable, predictable SEO</span>
+		<span>Stable, predictable SEO metadata</span>
 	</div>
 </footer>
 
 <style>
 .footer {
-	margin-top: 6rem;
+	margin-top: 8rem;
 	padding: 3rem 2rem 1.5rem;
-	background: var(--color-bg);
+	background: var(--color-surface);
 	border-top: 1px solid var(--color-border);
 }
 

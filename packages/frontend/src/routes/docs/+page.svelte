@@ -4,7 +4,7 @@
 
 	const copy = (text: string) => navigator.clipboard.writeText(text);
 
-	const curlExample = `curl -X POST https://api.metarank.io/v1/seo/meta \\
+	const curlExample = `curl -X POST https://api.metarank.dev/v1/seo/meta \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -12,7 +12,7 @@
     "body": "Full article content in Markdown, HTML, or plain text"
   }'`;
 
-	const jsExample = `fetch("https://api.metarank.io/v1/seo/meta", {
+	const jsExample = `fetch("https://api.metarank.dev/v1/seo/meta", {
   method: "POST",
   headers: {
     Authorization: "Bearer YOUR_API_KEY",
@@ -59,7 +59,7 @@
 
 		<Card class="endpoint">
 			<div class="method">POST</div>
-			<code>https://api.metarank.io/v1/seo/meta</code>
+			<code>https://api.metarank.dev/v1/seo/meta</code>
 		</Card>
 	</section>
 
@@ -323,31 +323,6 @@ li::before {
 	font-weight: 650;
 }
 
-/* Endpoint card */
-.endpoint {
-	display: flex;
-	align-items: center;
-	gap: 0.9rem;
-	flex-wrap: wrap;
-	padding: 0.9rem 1rem;
-}
-
-.endpoint code {
-	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-	font-size: 0.92rem;
-	color: var(--color-text);
-	background: rgba(255, 255, 255, 0.06);
-	border: 1px solid var(--color-border);
-	padding: 0.35rem 0.55rem;
-	border-radius: 0.6rem;
-}
-
-@media (prefers-color-scheme: light) {
-	.endpoint code {
-		background: rgba(15, 23, 42, 0.04);
-	}
-}
-
 .method {
 	font-size: 0.72rem;
 	font-weight: 750;
@@ -358,32 +333,6 @@ li::before {
 	background: rgba(76, 141, 255, 0.18);
 	color: var(--color-text);
 	border: 1px solid rgba(76, 141, 255, 0.28);
-}
-
-/* Code blocks inside Cards */
-.code pre {
-	margin: 0;
-	padding: 1rem 1.1rem;
-	border-radius: var(--radius-lg);
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	background:
-		linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-	font-size: 0.82rem;
-	line-height: 1.7;
-	white-space: pre-wrap;
-	word-break: break-word;
-	color: var(--color-text);
-}
-
-@media (prefers-color-scheme: light) {
-	.code pre {
-		border: 1px solid var(--color-border);
-		background:
-			linear-gradient(180deg, rgba(15, 23, 42, 0.03), rgba(15, 23, 42, 0.01));
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-	}
 }
 
 /* Examples (dark terminal look but still theme-aligned) */
@@ -500,9 +449,6 @@ section.cta h2::before {
 	}
 	section {
 		padding: 1.15rem 1.1rem;
-	}
-	.endpoint code {
-		font-size: 0.86rem;
 	}
 }
 </style>
