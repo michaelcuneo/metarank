@@ -4,9 +4,12 @@
   import '@fontsource/fjalla-one';
   import './app.css';
 
+  import { PUBLIC_CLERK_PUBLISHABLE_KEY } from '$env/static/public';
+
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 
+  import { ClerkProvider } from 'svelte-clerk';
   import { config } from '@fortawesome/fontawesome-svg-core'
 
   import '@fortawesome/fontawesome-svg-core/styles.css' // Import the CSS
@@ -15,6 +18,8 @@
   let { children }: { children: Snippet } = $props();
 </script>
 
-<Header />
-  {@render children?.()}
-<Footer />
+<ClerkProvider publishableKey={PUBLIC_CLERK_PUBLISHABLE_KEY}>
+  <Header />
+    {@render children?.()}
+  <Footer />
+</ClerkProvider>

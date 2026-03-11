@@ -17,7 +17,9 @@ export default $config({
 		};
 	},
 	async run() {
-		import ('./infra/config');
+		import('./infra/config');
+		import('./infra/api');
+		import('./infra/tables');
 		const web = await import('./infra/web');
 
     return {

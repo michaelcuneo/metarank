@@ -1,10 +1,21 @@
 {
-	"/": [],
-	"/about": [],
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/about": [
+		"src/routes/+layout.server.ts"
+	],
 	"/api": [
 		"src/routes/api/+server.ts"
 	],
-	"/docs": [],
-	"/generate": [],
-	"/pricing": []
+	"/docs": [
+		"src/routes/+layout.server.ts"
+	],
+	"/generate": [
+		"src/routes/+layout.server.ts"
+	],
+	"/pricing": [
+		"src/routes/+layout.server.ts"
+	]
 }

@@ -30,8 +30,6 @@
 </button>
 
 <style>
-	/* Base */
-/* Base */
 .btn {
 	display: inline-flex;
 	align-items: center;

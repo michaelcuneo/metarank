@@ -46,16 +46,6 @@
 			</a>
 
 			<a
-				href="https://github.com/michaelcuneo/seo-genius"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="icon-link"
-				aria-label="GitHub"
-			>
-				<FontAwesomeIcon icon={faGithub} />
-			</a>
-
-			<a
 				href="https://join.slack.com/t/michaelcuneo/shared_invite/zt-2ewl9vs81-QWUZBWzHqkGiaN4XpqLXjg"
 				target="_blank"
 				rel="noopener noreferrer"
