@@ -1,0 +1,4 @@
+const PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_c3VpdGVkLWltcGFsYS0xOS5jbGVyay5hY2NvdW50cy5kZXYk";
+export {
+  PUBLIC_CLERK_PUBLISHABLE_KEY as P
+};

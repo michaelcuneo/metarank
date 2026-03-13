@@ -94,6 +94,7 @@ html {
 }
 
 body {
+	text-rendering: optimizeLegibility;
 	margin: 0;
 	padding: 0;
 	background-color: var(--color-bg);
@@ -120,4 +121,32 @@ h6 {
 
 ::selection {
 	background: rgba(43, 111, 255, 0.22);
+}
+
+.page-shell {
+	padding-top: 4.5rem;
+	padding-bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+	.page-shell {
+		padding-top: 3.5rem;
+		padding-bottom: 4rem;
+	}
+}
+
+.page-title {
+	margin: 0;
+	font-size: clamp(2.1rem, 2vw + 1.25rem, 2.9rem);
+	line-height: 1.05;
+	letter-spacing: -0.035em;
+	font-weight: 700;
+}
+
+.page-lead {
+	margin-top: 0.85rem;
+	max-width: 62ch;
+	font-size: 1rem;
+	line-height: 1.65;
+	color: var(--color-text-muted);
 }

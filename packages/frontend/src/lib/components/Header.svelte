@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
-	import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
-	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+	import { SignedIn, SignedOut, UserButton } from 'svelte-clerk';
 </script>
 
 <header class="header">
@@ -15,7 +14,7 @@
 			<a
 				href="/"
 				class="nav-link"
-				class:active={$page.url.pathname === '/'}
+				class:active={page.url.pathname === '/'}
 			>
 				Landing
 			</a>
@@ -23,7 +22,7 @@
 			<a
 				href="/about"
 				class="nav-link"
-				class:active={$page.url.pathname.startsWith('/about')}
+				class:active={page.url.pathname.startsWith('/about')}
 			>
 				About
 			</a>
@@ -31,7 +30,7 @@
 			<a
 				href="/pricing"
 				class="nav-link"
-				class:active={$page.url.pathname.startsWith('/pricing')}
+				class:active={page.url.pathname.startsWith('/pricing')}
 			>
 				Pricing
 			</a>
@@ -39,13 +38,25 @@
 			<a
 				href="/docs"
 				class="nav-link"
-				class:active={$page.url.pathname.startsWith('/docs')}
+				class:active={page.url.pathname.startsWith('/docs')}
 			>
 				Docs
 			</a>
 		</nav>
 
 		<div class="actions">
+			<SignedIn>
+				<UserButton />
+			</SignedIn>
+			<SignedOut>
+				<Button
+					as="a"
+					href="/signin"
+					size="sm"
+				>
+					Sign in →
+				</Button>
+			</SignedOut>
 			<Button
 				as="a"
 				href="/generate"

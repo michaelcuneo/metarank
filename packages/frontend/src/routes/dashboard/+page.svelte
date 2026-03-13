@@ -1,0 +1,556 @@
+<script lang="ts">
+	import Card from '$lib/components/Card.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import DashboardPageHeader from './DashboardPageHeader.svelte';
+
+	type UsagePoint = {
+		label: string;
+		requests: number;
+	};
+
+	type ApiKey = {
+		id: string;
+		name: string;
+		prefix: string;
+		createdAt: string;
+		lastUsed: string;
+		status: 'Active' | 'Revoked';
+	};
+
+	const plan = {
+		name: 'Free',
+		requestsUsed: 42,
+		requestsLimit: 200,
+		billingStatus: 'No active subscription',
+		nextReset: 'April 1, 2026'
+	};
+
+	const usageHistory: UsagePoint[] = [
+		{ label: 'Oct', requests: 18 },
+		{ label: 'Nov', requests: 31 },
+		{ label: 'Dec', requests: 24 },
+		{ label: 'Jan', requests: 56 },
+		{ label: 'Feb', requests: 61 },
+		{ label: 'Mar', requests: 42 }
+	];
+
+	const apiKeys: ApiKey[] = [
+		{
+			id: 'key_1',
+			name: 'Production',
+			prefix: 'mrk_live_4f2a9c',
+			createdAt: 'March 10, 2026',
+			lastUsed: '2 hours ago',
+			status: 'Active'
+		},
+		{
+			id: 'key_2',
+			name: 'Staging',
+			prefix: 'mrk_live_7d91ab',
+			createdAt: 'March 5, 2026',
+			lastUsed: 'Never',
+			status: 'Active'
+		}
+	];
+
+	const usagePercent = Math.min(
+		100,
+		Math.round((plan.requestsUsed / plan.requestsLimit) * 100)
+	);
+
+	const maxUsage = Math.max(...usageHistory.map((item) => item.requests), 1);
+</script>
+
+<svelte:head>
+	<title>Dashboard — MetaRank</title>
+	<meta
+		name="description"
+		content="Monitor usage, API keys, billing, and account activity in the MetaRank dashboard."
+	/>
+</svelte:head>
+
+<div class="dashboard-page">
+	<DashboardPageHeader
+		eyebrow="Dashboard"
+		title="Overview"
+		description="Monitor usage, manage API keys, and keep track of your MetaRank account."
+	>
+		{#snippet actions()}
+			<Button as="a" href="/generate">Open generator</Button>
+			<Button as="a" href="/docs" variant="ghost">View docs</Button>
+		{/snippet}
+	</DashboardPageHeader>
+
+	<section class="stats-grid">
+		<Card class="stat-card">
+			<p class="stat-label">Current plan</p>
+			<p class="stat-value">{plan.name}</p>
+			<p class="stat-meta">{plan.billingStatus}</p>
+		</Card>
+
+		<Card class="stat-card">
+			<p class="stat-label">Monthly usage</p>
+			<p class="stat-value">{plan.requestsUsed} / {plan.requestsLimit}</p>
+			<p class="stat-meta">{usagePercent}% of monthly allowance used</p>
+		</Card>
+
+		<Card class="stat-card">
+			<p class="stat-label">Active API keys</p>
+			<p class="stat-value">{apiKeys.filter((key) => key.status === 'Active').length}</p>
+			<p class="stat-meta">Production and staging access</p>
+		</Card>
+
+		<Card class="stat-card">
+			<p class="stat-label">Usage reset</p>
+			<p class="stat-value">{plan.nextReset}</p>
+			<p class="stat-meta">Monthly limits refresh automatically</p>
+		</Card>
+	</section>
+
+	<section class="main-grid">
+		<Card class="panel usage-panel">
+			<div class="panel-header">
+				<div>
+					<h2 class="panel-title">Usage this month</h2>
+					<p class="panel-subtitle">
+						Track requests across your account and see how close you are to your limit.
+					</p>
+				</div>
+				<Button as="a" href="/dashboard/usage" variant="ghost" size="sm">
+					View usage
+				</Button>
+			</div>
+
+			<div class="usage-progress">
+				<div class="usage-progress-bar">
+					<div class="usage-progress-fill" style={`width: ${usagePercent}%`}></div>
+				</div>
+				<div class="usage-progress-meta">
+					<span>{plan.requestsUsed} used</span>
+					<span>{plan.requestsLimit} limit</span>
+				</div>
+			</div>
+
+			<div class="usage-chart" aria-label="Usage history">
+				{#each usageHistory as item}
+					<div class="usage-bar-group">
+						<div
+							class="usage-bar"
+							style={`height: ${Math.max(12, (item.requests / maxUsage) * 140)}px`}
+							aria-label={`${item.label}: ${item.requests} requests`}
+						></div>
+						<span class="usage-bar-label">{item.label}</span>
+					</div>
+				{/each}
+			</div>
+		</Card>
+
+		<Card class="panel actions-panel">
+			<div class="panel-header">
+				<div>
+					<h2 class="panel-title">Quick actions</h2>
+					<p class="panel-subtitle">
+						Common account and developer tasks.
+					</p>
+				</div>
+			</div>
+
+			<div class="action-list">
+				<a class="action-item" href="/generate">
+					<div>
+						<p class="action-title">Generate metadata</p>
+						<p class="action-text">Test content in the browser-based generator.</p>
+					</div>
+					<span class="action-arrow">→</span>
+				</a>
+
+				<a class="action-item" href="/docs">
+					<div>
+						<p class="action-title">Read API docs</p>
+						<p class="action-text">See request and response examples for the SEO endpoint.</p>
+					</div>
+					<span class="action-arrow">→</span>
+				</a>
+
+				<a class="action-item" href="/dashboard/api-keys">
+					<div>
+						<p class="action-title">Manage API keys</p>
+						<p class="action-text">Create, revoke, and review your active keys.</p>
+					</div>
+					<span class="action-arrow">→</span>
+				</a>
+
+				<a class="action-item" href="/dashboard/billing">
+					<div>
+						<p class="action-title">Review billing</p>
+						<p class="action-text">Check your current plan and upgrade when needed.</p>
+					</div>
+					<span class="action-arrow">→</span>
+				</a>
+			</div>
+		</Card>
+	</section>
+
+	<section class="lower-grid">
+		<Card class="panel keys-panel">
+			<div class="panel-header">
+				<div>
+					<h2 class="panel-title">Recent API keys</h2>
+					<p class="panel-subtitle">
+						Named keys make it easier to separate production and staging traffic.
+					</p>
+				</div>
+				<Button as="a" href="/dashboard/api-keys" size="sm">Manage keys</Button>
+			</div>
+
+			<div class="keys-table-wrap">
+				<table class="keys-table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Prefix</th>
+							<th>Created</th>
+							<th>Last used</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each apiKeys as key}
+							<tr>
+								<td>{key.name}</td>
+								<td><code>{key.prefix}</code></td>
+								<td>{key.createdAt}</td>
+								<td>{key.lastUsed}</td>
+								<td>
+									<span class:revoked={key.status === 'Revoked'} class="status-badge">
+										{key.status}
+									</span>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</Card>
+
+		<Card class="panel billing-panel">
+			<div class="panel-header">
+				<div>
+					<h2 class="panel-title">Billing</h2>
+					<p class="panel-subtitle">
+						Your current account and subscription status.
+					</p>
+				</div>
+				<Button as="a" href="/dashboard/billing" variant="ghost" size="sm">
+					Open billing
+				</Button>
+			</div>
+
+			<div class="billing-summary">
+				<div class="billing-row">
+					<span class="billing-label">Plan</span>
+					<span class="billing-value">{plan.name}</span>
+				</div>
+				<div class="billing-row">
+					<span class="billing-label">Status</span>
+					<span class="billing-value">{plan.billingStatus}</span>
+				</div>
+				<div class="billing-row">
+					<span class="billing-label">Included requests</span>
+					<span class="billing-value">{plan.requestsLimit} / month</span>
+				</div>
+			</div>
+
+			<div class="billing-actions">
+				<Button as="a" href="/pricing" variant="secondary">View plans</Button>
+				<Button as="a" href="/dashboard/billing">Manage billing</Button>
+			</div>
+		</Card>
+	</section>
+</div>
+
+<style>
+	.dashboard-page {
+		padding-top: 0.25rem;
+	}
+
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.stat-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	.stat-label {
+		margin: 0;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-subtle);
+	}
+
+	.stat-value {
+		margin: 0;
+		font-size: 1.4rem;
+		line-height: 1.1;
+		font-weight: 700;
+		color: var(--color-text);
+	}
+
+	.stat-meta {
+		margin: 0;
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+	}
+
+	.main-grid,
+	.lower-grid {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.panel {
+		min-height: 100%;
+	}
+
+	.panel-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.panel-title {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	.panel-subtitle {
+		margin: 0.45rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.6;
+		color: var(--color-text-muted);
+	}
+
+	.usage-progress {
+		margin-bottom: 1.25rem;
+	}
+
+	.usage-progress-bar {
+		height: 0.75rem;
+		border-radius: 999px;
+		background: var(--color-elevated);
+		border: 1px solid var(--color-border);
+		overflow: hidden;
+	}
+
+	.usage-progress-fill {
+		height: 100%;
+		background: var(--primary-bg);
+		border-radius: 999px;
+	}
+
+	.usage-progress-meta {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 0.55rem;
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+	}
+
+	.usage-chart {
+		display: grid;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		align-items: end;
+		gap: 0.75rem;
+		min-height: 180px;
+		padding-top: 0.5rem;
+	}
+
+	.usage-bar-group {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.55rem;
+	}
+
+	.usage-bar {
+		width: 100%;
+		max-width: 2.5rem;
+		border-radius: var(--radius-sm);
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, var(--primary-bg) 100%, white 0%),
+			color-mix(in srgb, var(--primary-bg) 72%, var(--color-bg) 28%)
+		);
+		border: 1px solid color-mix(in srgb, var(--primary-bg) 20%, transparent);
+		min-height: 12px;
+	}
+
+	.usage-bar-label {
+		font-size: 0.75rem;
+		color: var(--color-text-subtle);
+	}
+
+	.action-list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.action-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1rem;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		background: var(--color-elevated);
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.15s ease,
+			background-color 0.15s ease,
+			transform 0.15s ease;
+	}
+
+	.action-item:hover {
+		transform: translateY(-1px);
+		border-color: color-mix(in srgb, var(--primary-bg) 24%, var(--color-border));
+	}
+
+	.action-title {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	.action-text {
+		margin: 0.3rem 0 0;
+		font-size: 0.85rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+	}
+
+	.action-arrow {
+		font-size: 1rem;
+		color: var(--color-text-subtle);
+	}
+
+	.keys-table-wrap {
+		overflow-x: auto;
+	}
+
+	.keys-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9rem;
+	}
+
+	.keys-table th,
+	.keys-table td {
+		padding: 0.8rem 0.75rem;
+		text-align: left;
+		border-bottom: 1px solid var(--color-border);
+		vertical-align: middle;
+	}
+
+	.keys-table th {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-text-subtle);
+	}
+
+	.keys-table td {
+		color: var(--color-text);
+	}
+
+	.keys-table code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.84rem;
+		color: var(--color-text-muted);
+	}
+
+	.status-badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.25rem 0.55rem;
+		border-radius: 999px;
+		font-size: 0.76rem;
+		font-weight: 600;
+		background: color-mix(in srgb, var(--primary-bg) 10%, transparent);
+		color: var(--primary-bg);
+		border: 1px solid color-mix(in srgb, var(--primary-bg) 18%, transparent);
+	}
+
+	.status-badge.revoked {
+		background: color-mix(in srgb, var(--danger-bg) 10%, transparent);
+		color: var(--danger-bg);
+		border-color: color-mix(in srgb, var(--danger-bg) 18%, transparent);
+	}
+
+	.billing-summary {
+		display: grid;
+		gap: 0.9rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.billing-row {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.billing-label {
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+	}
+
+	.billing-value {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--color-text);
+		text-align: right;
+	}
+
+	.billing-actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 980px) {
+		.stats-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.main-grid,
+		.lower-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.stats-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

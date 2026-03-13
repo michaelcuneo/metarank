@@ -6,7 +6,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			auth: import('svelte-clerk/server').ClerkAuth;
-			plan: 'free' | 'pro' | 'enterprise';
+			plan: 'free' | 'pro' | 'team';
 		}
 		// interface PageData {}
 		// interface PageState {}

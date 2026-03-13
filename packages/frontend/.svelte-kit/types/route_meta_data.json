@@ -6,8 +6,45 @@
 	"/about": [
 		"src/routes/+layout.server.ts"
 	],
-	"/api": [
-		"src/routes/api/+server.ts"
+	"/api/account": [
+		"src/routes/api/account/+server.ts"
+	],
+	"/api/billing": [
+		"src/routes/api/billing/+server.ts"
+	],
+	"/api/keys": [
+		"src/routes/api/keys/+server.ts"
+	],
+	"/api/keys/[keyId]": [
+		"src/routes/api/keys/[keyId]/+server.ts"
+	],
+	"/api/usage": [
+		"src/routes/api/usage/+server.ts"
+	],
+	"/api/usage/history": [
+		"src/routes/api/usage/history/+server.ts"
+	],
+	"/dashboard": [
+		"src/routes/dashboard/+page.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/dashboard/api-keys": [
+		"src/routes/dashboard/api-keys/+page.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/dashboard/billing": [
+		"src/routes/dashboard/billing/+page.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/dashboard/usage": [
+		"src/routes/dashboard/usage/+page.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/docs": [
 		"src/routes/+layout.server.ts"
@@ -16,6 +53,9 @@
 		"src/routes/+layout.server.ts"
 	],
 	"/pricing": [
+		"src/routes/+layout.server.ts"
+	],
+	"/signin": [
 		"src/routes/+layout.server.ts"
 	]
 }

@@ -1,33 +1,37 @@
-import { usersTable, usageSnapshotsTable, billingTable } from "./tables";
-import { OpenAIKey, ClerkPublishableKey } from "./config";
+import {
+	usersTable,
+  usageSnapshotsTable,
+	billingTable,
+	apiKeysTable,
+	seoCacheTable
+} from './tables';
+import { OpenAIKey, ClerkPublishableKey } from './config';
 
-// Aim API
-const metarankApi = new sst.aws.ApiGatewayV2("MetarankAPI", {
-  link: [
-    usersTable,
-    usageSnapshotsTable,
-    billingTable,
-    OpenAIKey,
-    ClerkPublishableKey,
-  ],
-  cors: {
-    allowMethods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-    allowOrigins: ["*"],
-    allowHeaders: ["*"],
-  },
-  transform: {
-    route: {
-      handler: (args, opts) => {
-        args.memory ??= "128 MB";
-      },
-    },
-  },
+const metarankApi = new sst.aws.ApiGatewayV2('MetarankAPI', {
+	link: [
+		usersTable,
+		usageSnapshotsTable,
+		billingTable,
+		apiKeysTable,
+		seoCacheTable,
+		OpenAIKey,
+		ClerkPublishableKey
+	],
+	cors: {
+		allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+		allowOrigins: ['*'],
+		allowHeaders: ['*']
+	},
+	transform: {
+		route: {
+			handler: (args) => {
+				args.memory ??= '256 MB';
+			}
+		}
+	}
 });
 
-metarankApi.route("GET /", "./handlers/root.handler");
-metarankApi.route("GET /users/{userId}", "./handlers/user.getUser");
-metarankApi.route("POST /users", "./handlers/user.listUsers");
-metarankApi.route("POST /usage-snapshots", "./handlers/usage.snapshots");
-metarankApi.route("GET /billing/{userId}", "./handlers/billing.getBillingInfo");
+metarankApi.route('GET /health', './handlers/health.handler');
+metarankApi.route('POST /v1/seo/meta', './handlers/seo-generate-meta.handler');
 
 export { metarankApi };

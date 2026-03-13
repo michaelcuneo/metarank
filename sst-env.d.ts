@@ -10,6 +10,10 @@ declare module "sst" {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
     }
+    "MetarankApiKeys": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "MetarankBillingTable": {
       "name": string
       "type": "sst.aws.Dynamo"
@@ -17,6 +21,10 @@ declare module "sst" {
     "MetarankFrontend": {
       "type": "sst.aws.SvelteKit"
       "url": string
+    }
+    "MetarankSeoCache": {
+      "name": string
+      "type": "sst.aws.Dynamo"
     }
     "MetarankUsageSnapshots": {
       "name": string

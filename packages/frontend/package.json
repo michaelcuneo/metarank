@@ -1,6 +1,8 @@
 {
-	"name": "@michaelcuneo/seo-genius",
+	"name": "@michaelcuneo/metarank-frontend",
+	"private": true,
 	"version": "0.0.1",
+	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -12,25 +14,9 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint ."
 	},
-	"files": [
-		"dist",
-		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
-	],
-	"sideEffects": [
-		"**/*.css"
-	],
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"type": "module",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
-		}
-	},
-	"peerDependencies": {
-		"svelte": "^5.0.0"
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.16",
+		"tailwindcss": "^4.1.16"
 	},
 	"devDependencies": {
 		"@aws-sdk/client-comprehend": "^3.916.0",
@@ -75,12 +61,5 @@
 		"typescript": "^5.9.2",
 		"typescript-eslint": "^8.44.1",
 		"vite": "^7.1.7"
-	},
-	"keywords": [
-		"svelte"
-	],
-	"dependencies": {
-		"@tailwindcss/vite": "^4.1.16",
-		"tailwindcss": "^4.1.16"
 	}
 }

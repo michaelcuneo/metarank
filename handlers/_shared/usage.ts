@@ -1,0 +1,67 @@
+import { Resource } from 'sst';
+import { GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { db } from './db';
+
+function getCurrentPeriod(): string {
+	return new Date().toISOString().slice(0, 7);
+}
+
+export function getPlanLimit(plan: string): number {
+	switch (plan) {
+		case 'scale':
+			return 10000;
+		case 'pro':
+			return 1000;
+		default:
+			return 200;
+	}
+}
+
+export async function getBilling(userId: string) {
+	const result = await db.send(
+		new GetCommand({
+			TableName: Resource.MetarankBillingTable.name,
+			Key: { userId }
+		})
+	);
+
+	return result.Item ?? null;
+}
+
+export async function getCurrentUsage(userId: string) {
+	const period = getCurrentPeriod();
+
+	const result = await db.send(
+		new GetCommand({
+			TableName: Resource.MetarankUsageSnapshots.name,
+			Key: {
+				userId,
+				period
+			}
+		})
+	);
+
+	return {
+		period,
+		requestCount: Number(result.Item?.requestCount ?? 0)
+	};
+}
+
+export async function incrementUsage(userId: string) {
+	const period = getCurrentPeriod();
+
+	await db.send(
+		new UpdateCommand({
+			TableName: Resource.MetarankUsageSnapshots.name,
+			Key: {
+				userId,
+				period
+			},
+			UpdateExpression: 'SET updatedAt = :updatedAt ADD requestCount :increment',
+			ExpressionAttributeValues: {
+				':updatedAt': new Date().toISOString(),
+				':increment': 1
+			}
+		})
+	);
+}

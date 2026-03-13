@@ -3,7 +3,7 @@
 	import Card from '$lib/components/Card.svelte';
 </script>
 
-<div class="landing">
+<div class="page-shell landing">
 	<header class="hero">
 		<h1>SEO metadata that just works</h1>
 		<p class="hero-sub">

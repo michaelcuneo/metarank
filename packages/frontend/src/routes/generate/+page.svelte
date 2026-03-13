@@ -70,7 +70,7 @@
 	}
 </script>
 
-<div class="page">
+<div class="page-shell generate">
 	<div class="layout">
 		<Card class="panel">
 			<h1 class="panel-title">Generate metadata</h1>
@@ -191,7 +191,7 @@
 </div>
 
 <style>
-	.page {
+	.generate {
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 3rem 2rem 4rem;
@@ -202,11 +202,6 @@
 		grid-template-columns: 400px 1fr;
 		gap: 2rem;
 		align-items: start;
-	}
-
-	.panel {
-		position: sticky;
-		top: 1.25rem;
 	}
 
 	.panel-title {
@@ -240,12 +235,6 @@
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-	}
-
-	.output-card {
-		min-height: 520px;
-		padding: 0;
-		overflow: hidden;
 	}
 
 	.empty-state {
@@ -334,16 +323,8 @@
 	}
 
 	@media (max-width: 900px) {
-		.page {
-			padding: 2.5rem 1.25rem 3.5rem;
-		}
-
 		.layout {
 			grid-template-columns: 1fr;
-		}
-
-		.panel {
-			position: static;
 		}
 	}
 </style>

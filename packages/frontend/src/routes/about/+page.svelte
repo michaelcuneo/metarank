@@ -3,10 +3,10 @@
 	import Button from '$lib/components/Button.svelte';
 </script>
 
-<div class="about">
+<div class="page-shell about">
 	<header class="about-hero">
-		<h1>About MetaRank</h1>
-		<p class="lead">
+		<h1 class="page-title">About MetaRank</h1>
+		<p class="page-lead">
 			MetaRank is a simple API for generating clean, search-optimized SEO metadata
 			from real content.
 		</p>

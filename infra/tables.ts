@@ -5,12 +5,31 @@ const usersTable = new sst.aws.Dynamo("MetarankUsers", {
   primaryIndex: { hashKey: "userId" },
 });
 
+const apiKeysTable = new sst.aws.Dynamo("MetarankApiKeys", {
+  fields: {
+    keyHash: "string",
+    userId: "string",
+  },
+  primaryIndex: { hashKey: "keyHash" },
+  globalIndexes: {
+    byUser: { hashKey: "userId" }
+  }
+});
+
 const usageSnapshotsTable = new sst.aws.Dynamo("MetarankUsageSnapshots", {
   fields: {
-    projectId: "string",
+    userId: "string",
     period: "string",
   },
-  primaryIndex: { hashKey: "projectId", rangeKey: "period" },
+  primaryIndex: { hashKey: "userId", rangeKey: "period" },
+});
+
+const seoCacheTable = new sst.aws.Dynamo('MetarankSeoCache', {
+	fields: {
+		cacheKey: 'string'
+	},
+	primaryIndex: { hashKey: 'cacheKey' },
+	ttl: 'ttl'
 });
 
 const billingTable = new sst.aws.Dynamo("MetarankBillingTable", {
@@ -20,4 +39,4 @@ const billingTable = new sst.aws.Dynamo("MetarankBillingTable", {
   primaryIndex: { hashKey: "userId" },
 });
 
-export { usersTable, usageSnapshotsTable, billingTable };
+export { usersTable, apiKeysTable, usageSnapshotsTable, seoCacheTable, billingTable };
