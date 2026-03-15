@@ -9,10 +9,6 @@
 	title="Billing"
 	description="Review your current plan, usage allowance, and subscription details."
 >
-	{#snippet actions()}
-		<Button>Manage billing</Button>
-		<Button as="a" href="/pricing" variant="ghost">View plans</Button>
-	{/snippet}
 </DashboardPageHeader>
 
 <PricingTable	/>
