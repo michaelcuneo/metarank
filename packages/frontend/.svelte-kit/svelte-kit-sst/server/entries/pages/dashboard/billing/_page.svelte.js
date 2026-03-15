@@ -1,5 +1,17 @@
 import "clsx";
-import { C as Card } from "../../../../chunks/Card.js";
+import "../../../../chunks/errorThrower.js";
+import { P as PricingTable } from "../../../../chunks/PricingTable.js";
+import "@clerk/shared/authorization";
+import "@clerk/shared/deriveState";
+import "@clerk/shared/loadClerkJsScript";
+import "../../../../chunks/client.js";
+import "@clerk/shared/underscore";
+import "@sveltejs/kit/internal";
+import "../../../../chunks/exports.js";
+import "../../../../chunks/utils.js";
+import "@sveltejs/kit/internal/server";
+import "../../../../chunks/root.js";
+import "../../../../chunks/state.svelte.js";
 import { B as Button } from "../../../../chunks/Button.js";
 import { D as DashboardPageHeader } from "../../../../chunks/DashboardPageHeader.js";
 function _page($$renderer) {
@@ -31,12 +43,7 @@ function _page($$renderer) {
     });
   }
   $$renderer.push(`<!----> `);
-  Card($$renderer, {
-    children: ($$renderer2) => {
-      $$renderer2.push(`<h2 class="title svelte-ay4x9r">Billing details</h2> <p class="text svelte-ay4x9r">This page will show your active plan, subscription state, included usage, and billing actions once connected.</p>`);
-    },
-    $$slots: { default: true }
-  });
+  PricingTable($$renderer, {});
   $$renderer.push(`<!---->`);
 }
 export {

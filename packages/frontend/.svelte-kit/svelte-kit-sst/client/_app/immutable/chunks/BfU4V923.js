@@ -1,1 +1,0 @@
-import{a6 as t,d as l,b as o,a7 as u,e as a}from"./C0TdTIal.js";function c(n){o===null&&t(),u&&o.l!==null?s(o).m.push(n):l(()=>{const e=a(n);if(typeof e=="function")return e})}function i(n){o===null&&t(),c(()=>()=>a(n))}function s(n){var e=n.l;return e.u??={a:[],b:[],m:[]}}export{i as a,c as o};

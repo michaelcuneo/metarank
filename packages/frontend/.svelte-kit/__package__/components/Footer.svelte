@@ -1,3 +1,7 @@
+<script>
+	import ApiStatus from "./ApiStatus.svelte";
+
+</script>
 <footer class="footer">
 	<div class="footer-inner">
 		<div class="footer-brand">
@@ -26,6 +30,11 @@
 			<div class="footer-group">
 				<div class="footer-title">Company</div>
 				<a href="mailto:hello@metarank.io">Contact</a>
+			</div>
+
+			<div class="footer-group">
+			  <div class="footer-title">Service Status</div>
+				<ApiStatus />
 			</div>
 		</nav>
 	</div>
@@ -69,7 +78,7 @@
 
 .footer-nav {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(120px, 1fr));
+	grid-template-columns: repeat(4, minmax(120px, 1fr));
 	gap: 2rem;
 }
 

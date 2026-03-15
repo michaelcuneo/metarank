@@ -1,7 +1,8 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { PricingTable } from 'svelte-clerk';
+
+	let { data } = $props();
 </script>
 
 <div class="page-shell pricing">
@@ -26,8 +27,18 @@
 		<h2>Start generating SEO metadata today</h2>
 		<p>Try MetaRank for free, then upgrade when you’re ready to ship.</p>
 		<div class="cta-actions">
-			<Button>Get started free</Button>
-			<Button variant="ghost">View API docs</Button>
+			{#if data.auth.isSignedIn}
+				<Button as="a" href="/dashboard/generate" size="lg">
+					Try the generator
+				</Button>
+			{:else}
+				<Button as="a" href="/signup" size="lg">
+					Get started free
+				</Button>
+			{/if}
+			<Button as="a" href="/docs" size="lg" variant="ghost">
+				View API docs
+			</Button>
 		</div>
 	</section>
 </div>
@@ -110,5 +121,67 @@
 	gap: 1rem;
 	margin-top: 1.25rem;
 	flex-wrap: wrap;
+}
+
+:global(.cl-pricingTableCard) {
+	background-color: var(--color-bg);
+	border-color: var(--color-border);
+}
+:global(.cl-pricingTableCardHeader) {
+	background-color: var(--color-surface);
+	border-color: var(--color-border);
+}
+:global(.cl-pricingTableCardTitle) {
+	color: var(--color-text);
+}
+:global(.cl-pricingTableCardBody) {
+	background-color: var(--coior-bg);
+	color: var(--color-text);
+}
+:global(.cl-badge) {
+	background-color: var(--bg-accent);
+	color: var(--text-accent);
+	border-color: var(--border);
+}
+:global(.cl-pricingTableCardFee) {
+	color: var(--text);
+}
+:global(.cl-pricingTableCardDescription) {
+	color: var(--color-text-muted);
+}
+:global(.cl-pricingTableCardFeePeriodNotice) {
+	color: var(--color-text-muted);
+}
+:global(.cl-pricingTableCard:hover) {
+	border-color: var(--color-border);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+:global(.cl-pricingTableCardFeaturesListItem) {
+	border-top-color: var(--color-border);
+	color: var(--text);
+}
+:global(.cl-pricingTableCardFeatures) {
+	border-top-color: var(--color-border);
+	background-color: var(--color-bg);
+}
+:global(.cl-pricingTableCardFeaturesListItemTitle) {
+	color: var(--color-text);
+}
+:global(.cl-pricingTableCardFooter) {
+	border-top-color: var(--color-border);
+	background-color: var(--color-surface);
+}
+:global(.cl-pricingTableCardFooterNotice) {
+	color: var(--color-text);
+}
+:global(svg) {
+	color: var(--color-text) !important;
+}
+:global(.cl-pricingTableCardFooterButton) {
+	background-color: var(--primary-bg);
+	color: var(--primary-text);
+}
+:global(.cl-drawerContent) {
+	z-index: 9999 !important;
 }
 </style>

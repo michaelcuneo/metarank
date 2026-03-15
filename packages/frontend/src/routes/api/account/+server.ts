@@ -7,16 +7,16 @@ const db = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
 	marshallOptions: { removeUndefinedValues: true }
 });
 
-type Plan = 'free_user' | 'pro' | 'scale';
+type Plan = 'free_user' | 'pro' | 'team';
 
 function getPlanLimit(plan: Plan): number {
 	switch (plan) {
-		case 'scale':
-			return 10000;
+		case 'team':
+			return 25000;
 		case 'pro':
-			return 1000;
+			return 5000;
 		default:
-			return 200;
+			return 25;
 	}
 }
 

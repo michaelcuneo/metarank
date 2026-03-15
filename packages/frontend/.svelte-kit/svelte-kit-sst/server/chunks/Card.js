@@ -1,5 +1,4 @@
 import { m as element, k as attributes } from "./index2.js";
-/* empty css                                   */
 function Card($$renderer, $$props) {
   let {
     as = "div",

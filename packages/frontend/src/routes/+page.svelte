@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
 	import Card from '$lib/components/Card.svelte';
-</script>
+
+	let { data } = $props();
+ </script>
 
 <div class="page-shell landing">
 	<header class="hero">
@@ -14,9 +17,15 @@
 		</p>
 
 		<div class="hero-actions">
-			<Button as="a" href="/generate" size="lg">
-				Try the generator
-			</Button>
+			{#if data.auth.isSignedIn}
+				<Button as="a" href="/dashboard/generate" size="lg">
+					Try the generator
+				</Button>
+			{:else}
+				<Button as="a" href="/signup" size="lg">
+					Get started free
+				</Button>
+			{/if}
 			<Button as="a" href="/docs" size="lg" variant="ghost">
 				View API docs
 			</Button>
@@ -70,8 +79,18 @@
 			Try MetaRank in the browser or integrate it directly using the API.
 		</p>
 		<div class="cta-actions">
-			<Button as="a" href="/generate">Get started free</Button>
-			<Button as="a" href="/docs" variant="ghost">Read the docs</Button>
+			{#if data.auth.isSignedIn}
+				<Button as="a" href="/dashboard/generate" size="lg">
+					Try the generator
+				</Button>
+			{:else}
+				<Button as="a" href="/signup" size="lg">
+					Get started free
+				</Button>
+			{/if}
+			<Button as="a" href="/docs" size="lg" variant="ghost">
+				View API docs
+			</Button>
 		</div>
 	</section>
 </div>

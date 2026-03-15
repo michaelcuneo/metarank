@@ -10,9 +10,9 @@ import { isHttpOrHttps } from "@clerk/shared/proxy";
 import { isDevelopmentFromSecretKey } from "@clerk/shared/keys";
 import { g as getDynamicPublicEnvVariables } from "../chunks/getDynamicPublicEnvVariables.js";
 import { isTruthy } from "@clerk/shared/underscore";
-import { P as PUBLIC_CLERK_PUBLISHABLE_KEY } from "../chunks/public.js";
-import crypto from "node:crypto";
 import { Resource } from "sst";
+import { a as PUBLIC_CLERK_PUBLISHABLE_KEY_PROD, b as PUBLIC_CLERK_PUBLISHABLE_KEY_DEV } from "../chunks/public.js";
+import crypto from "node:crypto";
 function patchRequest(request) {
   const clonedRequest = new Request(request.url, {
     headers: request.headers,
@@ -139,18 +139,35 @@ Check if signInUrl is missing from your configuration or if it is not an absolut
 2) With environment variables e.g.
    PUBLIC_CLERK_SIGN_IN_URL='SOME_URL'
    PUBLIC_CLERK_IS_SATELLITE='true'`;
+const key = Resource.App.stage === "production" ? PUBLIC_CLERK_PUBLISHABLE_KEY_PROD : PUBLIC_CLERK_PUBLISHABLE_KEY_DEV;
 const clerkHandle = withClerkHandler({
-  publishableKey: PUBLIC_CLERK_PUBLISHABLE_KEY
+  publishableKey: key
 });
 function hash(data) {
   return crypto.createHash("sha256").update(JSON.stringify(data)).digest("base64url");
 }
 function getPlanForUser(auth) {
-  if (auth?.has({ plan: "scale" })) return "scale";
+  if (auth?.has({ plan: "team" })) return "team";
   if (auth?.has({ plan: "pro" })) return "pro";
   return "free_user";
 }
 const WEEK = 7 * 24 * 60 * 60 * 1e3;
+async function getCurrentAccount(fetchFn) {
+  try {
+    const res = await fetchFn("/api/account");
+    if (!res.ok) {
+      return null;
+    }
+    const data = await res.json();
+    return {
+      userId: String(data.userId),
+      plan: data.plan ?? "free_user",
+      updatedAt: Number(data.updatedAt ?? Date.now())
+    };
+  } catch {
+    return null;
+  }
+}
 const syncUserHandle = async ({ event, resolve }) => {
   const auth = event.locals.auth?.();
   const userId = auth?.userId;
@@ -159,14 +176,24 @@ const syncUserHandle = async ({ event, resolve }) => {
     event.cookies.delete("user_hash_set_at", { path: "/" });
     return resolve(event);
   }
+  if (event.url.pathname.startsWith("/api")) {
+    return resolve(event);
+  }
   const now = Date.now();
   const cookieHash = event.cookies.get("user_hash");
   const cookieAt = Number(event.cookies.get("user_hash_set_at") || 0);
-  if (cookieHash && cookieAt && now - cookieAt < WEEK) {
+  const clerkPlan = getPlanForUser(auth);
+  const currentAccount = await getCurrentAccount(event.fetch);
+  const storedPlan = currentAccount?.plan ?? "free_user";
+  const planChanged = storedPlan !== clerkPlan;
+  if (!planChanged && cookieHash && cookieAt && now - cookieAt < WEEK) {
     return resolve(event);
   }
+  if (planChanged) {
+    event.cookies.delete("user_hash", { path: "/" });
+    event.cookies.delete("user_hash_set_at", { path: "/" });
+  }
   const clerkUser = await clerkClient.users.getUser(userId);
-  const clerkPlan = getPlanForUser(auth);
   const payload = {
     userId,
     email: clerkUser.emailAddresses?.[0]?.emailAddress ?? null,
@@ -176,9 +203,11 @@ const syncUserHandle = async ({ event, resolve }) => {
     plan: clerkPlan,
     lastActiveAt: now
   };
-  const res = await fetch(`${Resource.MetarankAPI.url}/v1/account/internal/sync`, {
+  const res = await event.fetch("/api/account/internal/sync", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(payload)
   });
   if (!res.ok) {

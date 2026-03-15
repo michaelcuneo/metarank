@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
 	import Button from '$lib/components/Button.svelte';
+
+	let { data } = $props();
 </script>
 
 <div class="page-shell about">
@@ -43,7 +45,7 @@
 	</section>
 
 	<section>
-		<h2>Who it’s for</h2>
+		<h2>Who it's for</h2>
 		<p>
 			MetaRank is built for developers, content teams, and platforms that
 			need reliable SEO metadata at scale.
@@ -57,7 +59,7 @@
 	</section>
 
 	<section>
-		<h2>What it’s not</h2>
+		<h2>What it's not</h2>
 		<p>
 			MetaRank is not a keyword research tool, a site auditor, or an SEO dashboard.
 		</p>
@@ -73,8 +75,18 @@
 			You can try MetaRank directly in the browser or integrate it using the API.
 		</p>
 		<div class="cta-actions">
-			<Button as="a" href="/generate">Try the generator</Button>
-			<Button as="a" href="/docs" variant="ghost">View the docs</Button>
+			{#if data.auth.isSignedIn}
+				<Button as="a" href="/dashboard/generate" size="lg">
+					Try the generator
+				</Button>
+			{:else}
+				<Button as="a" href="/signup" size="lg">
+					Get started free
+				</Button>
+			{/if}
+			<Button as="a" href="/docs" size="lg" variant="ghost">
+				View API docs
+			</Button>
 		</div>
 	</Card>
 </div>
@@ -96,14 +108,6 @@
 		line-height: 1.06;
 		letter-spacing: -0.03em;
 		font-weight: 700;
-	}
-
-	.lead {
-		font-size: 1rem;
-		line-height: 1.65;
-		color: var(--color-text-muted);
-		margin-top: 0.85rem;
-		max-width: 66ch;
 	}
 
 	section {
@@ -138,24 +142,6 @@
 	li {
 		margin-bottom: 0.45rem;
 		line-height: 1.6;
-	}
-
-	.cta {
-		margin-top: 3rem;
-		text-align: center;
-	}
-
-	.cta h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		font-weight: 600;
-		letter-spacing: -0.02em;
-	}
-
-	.cta p {
-		margin: 0.65rem auto 0;
-		color: var(--color-text-muted);
-		max-width: 60ch;
 	}
 
 	.cta-actions {

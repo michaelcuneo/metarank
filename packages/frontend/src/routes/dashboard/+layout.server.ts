@@ -1,13 +1,30 @@
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import type { LayoutServerLoad } from './$types.js';
 
-export async function load({ locals }) {
+type UsageResponse = {
+	period: string;
+	requestsUsed: number;
+	requestsLimit: number;
+	plan: 'free_user' | 'pro' | 'team';
+};
+
+export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 	const auth = locals.auth?.();
 
 	if (!auth?.userId) {
-		throw redirect(302, '/login');
+		throw redirect(302, '/signin');
 	}
 
+	const usageRes = await fetch('/api/usage');
+
+	if (!usageRes.ok) {
+		throw error(usageRes.status, 'Failed to load usage');
+	}
+
+	const usage = (await usageRes.json()) as UsageResponse;
+
 	return {
-		userId: auth.userId
+		userId: auth.userId,
+		usage
 	};
-}
+};

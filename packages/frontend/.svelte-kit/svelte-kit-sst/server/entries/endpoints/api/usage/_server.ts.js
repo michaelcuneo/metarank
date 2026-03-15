@@ -7,12 +7,12 @@ const db = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
 });
 function getPlanLimit(plan) {
   switch (plan) {
-    case "scale":
-      return 1e4;
+    case "team":
+      return 25e3;
     case "pro":
-      return 1e3;
+      return 5e3;
     default:
-      return 200;
+      return 25;
   }
 }
 function getCurrentPeriod() {

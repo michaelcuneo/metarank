@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import Button from './Button.svelte';
-	import { SignedIn, SignedOut, UserButton } from 'svelte-clerk';
+	import { SignedIn, SignedOut, SignInButton, UserButton } from 'svelte-clerk';
 </script>
 
 <header class="header">
@@ -45,26 +45,16 @@
 		</nav>
 
 		<div class="actions">
-			<SignedIn>
-				<UserButton />
-			</SignedIn>
-			<SignedOut>
-				<Button
-					as="a"
-					href="/signin"
-					size="sm"
-				>
-					Sign in →
-				</Button>
-			</SignedOut>
-			<Button
-				as="a"
-				href="/generate"
-				size="sm"
-			>
-				Generate →
+		<SignedOut>
+			<SignInButton class="clerk-user-button" />
+		</SignedOut>
+		<SignedIn>
+			<UserButton />
+			<Button as="a" href="/dashboard" variant="ghost" size="sm">
+				Dashboard
 			</Button>
-		</div>
+		</SignedIn>
+	  </div>
 	</div>
 </header>
 
@@ -135,6 +125,37 @@
 	display: flex;
 	gap: 0.75rem;
 	align-items: center;
+}
+
+:global(.clerk-user-button) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	font-family: inherit;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+	border-radius: var(--radius-sm);
+	border: 1px solid transparent;
+	min-height: 2rem;
+	padding: 0.4rem 0.75rem;
+	font-size: 0.75rem;
+	cursor: pointer;
+	user-select: none;
+	background: var(--primary-bg);
+	color: var(--primary-text);
+	border-color: var(--primary-bg);
+	transition:
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		color 0.15s ease,
+		box-shadow 0.15s ease;
+}
+:global(.clerk-user-button:hover) {
+	background: var(--primary-hover);
+	border-color: var(--primary-hover);
 }
 
 /* Mobile */

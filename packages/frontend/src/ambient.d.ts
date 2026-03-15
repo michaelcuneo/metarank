@@ -21,12 +21,9 @@ interface UsageEvent {
 	languageCode: string;
 }
 
-export interface UsageContext {
+interface UsageContext {
 	userId: string;
 	source: 'ui' | 'api';
 }
 
-export async function generateSeoMeta(
-	post: PostInput,
-	usage?: UsageContext
-): Promise<SeoMetaResponseV1>;
+async function generateSeoMeta(post: PostInput, usage?: UsageContext): Promise<SeoMetaResponseV1>;

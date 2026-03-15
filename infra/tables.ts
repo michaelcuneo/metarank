@@ -1,27 +1,27 @@
-const usersTable = new sst.aws.Dynamo("MetarankUsers", {
-  fields: {
-    userId: "string",
-  },
-  primaryIndex: { hashKey: "userId" },
+const usersTable = new sst.aws.Dynamo('MetarankUsers', {
+	fields: {
+		userId: 'string'
+	},
+	primaryIndex: { hashKey: 'userId' }
 });
 
-const apiKeysTable = new sst.aws.Dynamo("MetarankApiKeys", {
-  fields: {
-    keyHash: "string",
-    userId: "string",
-  },
-  primaryIndex: { hashKey: "keyHash" },
-  globalIndexes: {
-    byUser: { hashKey: "userId" }
-  }
+const apiKeysTable = new sst.aws.Dynamo('MetarankApiKeys', {
+	fields: {
+		keyHash: 'string',
+		userId: 'string'
+	},
+	primaryIndex: { hashKey: 'keyHash' },
+	globalIndexes: {
+		byUser: { hashKey: 'userId' }
+	}
 });
 
-const usageSnapshotsTable = new sst.aws.Dynamo("MetarankUsageSnapshots", {
-  fields: {
-    userId: "string",
-    period: "string",
-  },
-  primaryIndex: { hashKey: "userId", rangeKey: "period" },
+const usageSnapshotsTable = new sst.aws.Dynamo('MetarankUsageSnapshots', {
+	fields: {
+		userId: 'string',
+		period: 'string'
+	},
+	primaryIndex: { hashKey: 'userId', rangeKey: 'period' }
 });
 
 const seoCacheTable = new sst.aws.Dynamo('MetarankSeoCache', {
@@ -32,11 +32,25 @@ const seoCacheTable = new sst.aws.Dynamo('MetarankSeoCache', {
 	ttl: 'ttl'
 });
 
-const billingTable = new sst.aws.Dynamo("MetarankBillingTable", {
-  fields: {
-    userId: "string",
-  },
-  primaryIndex: { hashKey: "userId" },
+const billingTable = new sst.aws.Dynamo('MetarankBillingTable', {
+	fields: {
+		userId: 'string'
+	},
+	primaryIndex: { hashKey: 'userId' }
 });
 
-export { usersTable, apiKeysTable, usageSnapshotsTable, seoCacheTable, billingTable };
+const seoLocksTable = new sst.aws.Dynamo('MetarankSeoLocks', {
+	fields: {
+		cacheKey: 'string'
+	},
+	primaryIndex: { hashKey: 'cacheKey' }
+});
+
+export {
+	usersTable,
+	apiKeysTable,
+	usageSnapshotsTable,
+	seoCacheTable,
+	billingTable,
+	seoLocksTable
+};

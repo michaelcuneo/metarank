@@ -9,14 +9,23 @@
 	"/api/account": [
 		"src/routes/api/account/+server.ts"
 	],
+	"/api/account/internal/sync": [
+		"src/routes/api/account/internal/sync/+server.ts"
+	],
 	"/api/billing": [
 		"src/routes/api/billing/+server.ts"
+	],
+	"/api/generate": [
+		"src/routes/api/generate/+server.ts"
 	],
 	"/api/keys": [
 		"src/routes/api/keys/+server.ts"
 	],
 	"/api/keys/[keyId]": [
 		"src/routes/api/keys/[keyId]/+server.ts"
+	],
+	"/api/status": [
+		"src/routes/api/status/+server.ts"
 	],
 	"/api/usage": [
 		"src/routes/api/usage/+server.ts"
@@ -41,6 +50,11 @@
 		"src/routes/dashboard/+layout.server.ts",
 		"src/routes/+layout.server.ts"
 	],
+	"/dashboard/generate": [
+		"src/routes/dashboard/generate/+page.server.ts",
+		"src/routes/dashboard/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
 	"/dashboard/usage": [
 		"src/routes/dashboard/usage/+page.server.ts",
 		"src/routes/dashboard/+layout.server.ts",
@@ -49,13 +63,7 @@
 	"/docs": [
 		"src/routes/+layout.server.ts"
 	],
-	"/generate": [
-		"src/routes/+layout.server.ts"
-	],
 	"/pricing": [
-		"src/routes/+layout.server.ts"
-	],
-	"/signin": [
 		"src/routes/+layout.server.ts"
 	]
 }

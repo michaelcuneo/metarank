@@ -3,62 +3,125 @@
 	import Button from '$lib/components/Button.svelte';
 	import DashboardPageHeader from './DashboardPageHeader.svelte';
 
+	type Account = {
+		userId: string;
+		email: string | null;
+		firstName: string | null;
+		lastName: string | null;
+		imageUrl: string | null;
+		plan: 'free_user' | 'pro' | 'team';
+		status: 'active' | 'suspended';
+		requestsUsed: number;
+		requestsLimit: number;
+		createdAt: number;
+		updatedAt: number;
+	};
+
+	type Usage = {
+		period: string;
+		requestsUsed: number;
+		requestsLimit: number;
+		plan: 'free_user' | 'pro' | 'team';
+	};
+
+	type ApiKey = {
+		keyId: string;
+		name: string;
+		prefix: string;
+		createdAt: number;
+		revoked: boolean;
+	};
+
+	type Billing = {
+		userId: string;
+		plan: 'free_user' | 'pro' | 'team';
+		status: string;
+		requestsLimit: number | null;
+		stripeCustomerId: string | null;
+		stripeSubscriptionId: string | null;
+	};
+
+	let { data } = $props<{
+		data: {
+			account: Account;
+			usage: Usage;
+			keys: ApiKey[];
+			billing: Billing;
+		};
+	}>();
+
+	function formatPlan(plan: string): string {
+		switch (plan) {
+			case 'free_user':
+				return 'Free';
+			case 'pro':
+				return 'Pro';
+			case 'team':
+				return 'Team';
+			default:
+				return plan;
+		}
+	}
+
+	function formatBillingStatus(billing: Billing): string {
+		if (billing.plan === 'free_user') {
+			return 'No active subscription';
+		}
+
+		if (billing.status) {
+			return billing.status;
+		}
+
+		return 'Active subscription';
+	}
+
+	function getNextResetLabel(period: string): string {
+		const [year, month] = period.split('-').map(Number);
+
+		if (!year || !month) {
+			return 'Next month';
+		}
+
+		const next = new Date(Date.UTC(year, month, 1));
+		return next.toLocaleDateString(undefined, {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric'
+		});
+	}
+
+	function formatDate(timestamp: number): string {
+		return new Date(timestamp).toLocaleDateString(undefined, {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric'
+		});
+	}
+
+	const planName = $derived(formatPlan(data.account.plan));
+	const billingStatus = $derived(formatBillingStatus(data.billing));
+	const requestsUsed = $derived(data.usage.requestsUsed);
+	const requestsLimit = $derived(data.usage.requestsLimit);
+	const usagePercent = $derived(
+		Math.min(100, Math.round((requestsUsed / Math.max(requestsLimit, 1)) * 100))
+	);
+	const activeKeys = $derived(data.keys.filter((key: ApiKey) => !key.revoked));
+	const recentKeys = $derived(data.keys.slice(0, 5));
+	const nextReset = $derived(getNextResetLabel(data.usage.period));
+
 	type UsagePoint = {
 		label: string;
 		requests: number;
 	};
 
-	type ApiKey = {
-		id: string;
-		name: string;
-		prefix: string;
-		createdAt: string;
-		lastUsed: string;
-		status: 'Active' | 'Revoked';
-	};
-
-	const plan = {
-		name: 'Free',
-		requestsUsed: 42,
-		requestsLimit: 200,
-		billingStatus: 'No active subscription',
-		nextReset: 'April 1, 2026'
-	};
-
-	const usageHistory: UsagePoint[] = [
-		{ label: 'Oct', requests: 18 },
-		{ label: 'Nov', requests: 31 },
-		{ label: 'Dec', requests: 24 },
-		{ label: 'Jan', requests: 56 },
-		{ label: 'Feb', requests: 61 },
-		{ label: 'Mar', requests: 42 }
-	];
-
-	const apiKeys: ApiKey[] = [
+	const usageHistory: UsagePoint[] = $derived([
 		{
-			id: 'key_1',
-			name: 'Production',
-			prefix: 'mrk_live_4f2a9c',
-			createdAt: 'March 10, 2026',
-			lastUsed: '2 hours ago',
-			status: 'Active'
-		},
-		{
-			id: 'key_2',
-			name: 'Staging',
-			prefix: 'mrk_live_7d91ab',
-			createdAt: 'March 5, 2026',
-			lastUsed: 'Never',
-			status: 'Active'
+			label: data.usage.period,
+			requests: data.usage.requestsUsed
 		}
-	];
+	]);
 
-	const usagePercent = Math.min(
-		100,
-		Math.round((plan.requestsUsed / plan.requestsLimit) * 100)
-	);
-
-	const maxUsage = Math.max(...usageHistory.map((item) => item.requests), 1);
+	const maxUsage = $derived(Math.max(...usageHistory.map((item) => item.requests), 1));
 </script>
 
 <svelte:head>
@@ -76,39 +139,47 @@
 		description="Monitor usage, manage API keys, and keep track of your MetaRank account."
 	>
 		{#snippet actions()}
-			<Button as="a" href="/generate">Open generator</Button>
+			<Button as="a" href="/dashboard/generate">Open generator</Button>
 			<Button as="a" href="/docs" variant="ghost">View docs</Button>
 		{/snippet}
 	</DashboardPageHeader>
 
 	<section class="stats-grid">
-		<Card class="stat-card">
+		<Card>
 			<p class="stat-label">Current plan</p>
-			<p class="stat-value">{plan.name}</p>
-			<p class="stat-meta">{plan.billingStatus}</p>
+			<p class="stat-value">{planName}</p>
+			<p class="stat-meta">{billingStatus}</p>
 		</Card>
 
-		<Card class="stat-card">
+		<Card>
 			<p class="stat-label">Monthly usage</p>
-			<p class="stat-value">{plan.requestsUsed} / {plan.requestsLimit}</p>
+			<p class="stat-value">{requestsUsed} / {requestsLimit}</p>
 			<p class="stat-meta">{usagePercent}% of monthly allowance used</p>
 		</Card>
 
-		<Card class="stat-card">
+		<Card>
 			<p class="stat-label">Active API keys</p>
-			<p class="stat-value">{apiKeys.filter((key) => key.status === 'Active').length}</p>
-			<p class="stat-meta">Production and staging access</p>
+			<p class="stat-value">{activeKeys.length}</p>
+			<p class="stat-meta">
+				{#if activeKeys.length === 0}
+					No active keys yet
+				{:else if activeKeys.length === 1}
+					1 key available
+				{:else}
+					{activeKeys.length} keys available
+				{/if}
+			</p>
 		</Card>
 
-		<Card class="stat-card">
+		<Card>
 			<p class="stat-label">Usage reset</p>
-			<p class="stat-value">{plan.nextReset}</p>
+			<p class="stat-value">{nextReset}</p>
 			<p class="stat-meta">Monthly limits refresh automatically</p>
 		</Card>
 	</section>
 
 	<section class="main-grid">
-		<Card class="panel usage-panel">
+		<Card class="usage-panel">
 			<div class="panel-header">
 				<div>
 					<h2 class="panel-title">Usage this month</h2>
@@ -126,8 +197,8 @@
 					<div class="usage-progress-fill" style={`width: ${usagePercent}%`}></div>
 				</div>
 				<div class="usage-progress-meta">
-					<span>{plan.requestsUsed} used</span>
-					<span>{plan.requestsLimit} limit</span>
+					<span>{requestsUsed} used</span>
+					<span>{requestsLimit} limit</span>
 				</div>
 			</div>
 
@@ -145,7 +216,7 @@
 			</div>
 		</Card>
 
-		<Card class="panel actions-panel">
+		<Card>
 			<div class="panel-header">
 				<div>
 					<h2 class="panel-title">Quick actions</h2>
@@ -192,7 +263,7 @@
 	</section>
 
 	<section class="lower-grid">
-		<Card class="panel keys-panel">
+		<Card>
 			<div class="panel-header">
 				<div>
 					<h2 class="panel-title">Recent API keys</h2>
@@ -203,37 +274,39 @@
 				<Button as="a" href="/dashboard/api-keys" size="sm">Manage keys</Button>
 			</div>
 
-			<div class="keys-table-wrap">
-				<table class="keys-table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Prefix</th>
-							<th>Created</th>
-							<th>Last used</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each apiKeys as key}
+			{#if recentKeys.length === 0}
+				<p class="empty-copy">No API keys created yet.</p>
+			{:else}
+				<div class="keys-table-wrap">
+					<table class="keys-table">
+						<thead>
 							<tr>
-								<td>{key.name}</td>
-								<td><code>{key.prefix}</code></td>
-								<td>{key.createdAt}</td>
-								<td>{key.lastUsed}</td>
-								<td>
-									<span class:revoked={key.status === 'Revoked'} class="status-badge">
-										{key.status}
-									</span>
-								</td>
+								<th>Name</th>
+								<th>Prefix</th>
+								<th>Created</th>
+								<th>Status</th>
 							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
+						</thead>
+						<tbody>
+							{#each recentKeys as key}
+								<tr>
+									<td>{key.name}</td>
+									<td><code>{key.prefix}</code></td>
+									<td>{formatDate(key.createdAt)}</td>
+									<td>
+										<span class:revoked={key.revoked} class="status-badge">
+											{key.revoked ? 'Revoked' : 'Active'}
+										</span>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			{/if}
 		</Card>
 
-		<Card class="panel billing-panel">
+		<Card>
 			<div class="panel-header">
 				<div>
 					<h2 class="panel-title">Billing</h2>
@@ -249,15 +322,15 @@
 			<div class="billing-summary">
 				<div class="billing-row">
 					<span class="billing-label">Plan</span>
-					<span class="billing-value">{plan.name}</span>
+					<span class="billing-value">{planName}</span>
 				</div>
 				<div class="billing-row">
 					<span class="billing-label">Status</span>
-					<span class="billing-value">{plan.billingStatus}</span>
+					<span class="billing-value">{billingStatus}</span>
 				</div>
 				<div class="billing-row">
 					<span class="billing-label">Included requests</span>
-					<span class="billing-value">{plan.requestsLimit} / month</span>
+					<span class="billing-value">{requestsLimit} / month</span>
 				</div>
 			</div>
 
@@ -279,12 +352,6 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: 1rem;
 		margin-bottom: 1rem;
-	}
-
-	.stat-card {
-		display: flex;
-		flex-direction: column;
-		gap: 0.45rem;
 	}
 
 	.stat-label {
@@ -317,10 +384,6 @@
 		grid-template-columns: 2fr 1fr;
 		gap: 1rem;
 		margin-top: 1rem;
-	}
-
-	.panel {
-		min-height: 100%;
 	}
 
 	.panel-header {
@@ -373,7 +436,7 @@
 
 	.usage-chart {
 		display: grid;
-		grid-template-columns: repeat(6, minmax(0, 1fr));
+		grid-template-columns: repeat(1, minmax(0, 1fr));
 		align-items: end;
 		gap: 0.75rem;
 		min-height: 180px;
@@ -535,6 +598,13 @@
 		display: flex;
 		gap: 0.75rem;
 		flex-wrap: wrap;
+	}
+
+	.empty-copy {
+		margin: 0;
+		font-size: 0.9rem;
+		line-height: 1.6;
+		color: var(--color-text-muted);
 	}
 
 	@media (max-width: 980px) {

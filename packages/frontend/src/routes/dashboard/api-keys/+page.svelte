@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import Card from '$lib/components/Card.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import DashboardPageHeader from '../DashboardPageHeader.svelte';
@@ -19,86 +21,32 @@
 		createdAt: number;
 	};
 
-	let { data } = $props<{
+	type ActionData = {
+		createError?: string;
+		revokeError?: string;
+		createdKey?: CreatedKey;
+		revokedKeyId?: string;
+	};
+
+	let { data, form } = $props<{
 		data: {
 			keys: ApiKeyItem[];
 		};
+		form?: ActionData;
 	}>();
 
 	let name = $state('');
 	let creating = $state(false);
 	let revokingKeyId = $state<string | null>(null);
-	let createError = $state('');
-	let createdKey = $state<CreatedKey | null>(null);
-	let keys = $state<ApiKeyItem[]>(data.keys);
+	let createdKey = $derived<CreatedKey | null>(form?.createdKey ?? null);
 
-	async function createKey() {
-		createError = '';
-
-		const trimmed = name.trim();
-
-		if (!trimmed) {
-			createError = 'Key name is required.';
-			return;
-		}
-
-		creating = true;
-
+	function storeRawKey(created: CreatedKey) {
 		try {
-			const res = await fetch('/api/keys', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ name: trimmed })
-			});
-
-			if (!res.ok) {
-				const body = await res.json().catch(() => null);
-				throw new Error(body?.error ?? 'Failed to create API key');
-			}
-
-			const created = (await res.json()) as CreatedKey;
-			createdKey = created;
-			name = '';
-
-			keys = [
-				{
-					keyId: created.keyId,
-					name: created.name,
-					prefix: created.prefix,
-					createdAt: created.createdAt,
-					revoked: false
-				},
-				...keys
-			];
-		} catch (err) {
-			createError = err instanceof Error ? err.message : 'Failed to create API key';
-		} finally {
-			creating = false;
-		}
-	}
-
-	async function revokeKey(keyId: string) {
-		revokingKeyId = keyId;
-
-		try {
-			const res = await fetch(`/api/keys/${keyId}`, {
-				method: 'DELETE'
-			});
-
-			if (!res.ok && res.status !== 204) {
-				const body = await res.json().catch(() => null);
-				throw new Error(body?.error ?? 'Failed to revoke API key');
-			}
-
-			keys = keys.map((key) =>
-				key.keyId === keyId ? { ...key, revoked: true } : key
-			);
-		} catch (err) {
-			createError = err instanceof Error ? err.message : 'Failed to revoke API key';
-		} finally {
-			revokingKeyId = null;
+			const existing = JSON.parse(localStorage.getItem('metarank.rawApiKeys') ?? '{}');
+			existing[created.keyId] = created.key;
+			localStorage.setItem('metarank.rawApiKeys', JSON.stringify(existing));
+		} catch {
+			// ignore storage errors
 		}
 	}
 
@@ -106,6 +54,19 @@
 		if (!createdKey?.key) return;
 		await navigator.clipboard.writeText(createdKey.key);
 	}
+
+	const createError = $derived(form?.createError ?? '');
+	const revokeError = $derived(form?.revokeError ?? '');
+
+	const keys = $derived(() => {
+		if (!form?.revokedKeyId) {
+			return data.keys;
+		}
+
+		return data.keys.map((key: ApiKeyItem) =>
+			key.keyId === form.revokedKeyId ? { ...key, revoked: true } : key
+		);
+	});
 </script>
 
 <svelte:head>
@@ -127,30 +88,55 @@
 </DashboardPageHeader>
 
 <div class="keys-page">
-	<Card class="panel create-panel">
+	<Card class="create-panel">
 		<h2 class="section-title">Create API key</h2>
 		<p class="section-copy">
 			Name your key by environment or use case so you can identify it later.
 		</p>
 
-		<div class="create-row">
-			<div class="field">
-				<label class="label" for="key-name">Key name</label>
-				<input
-					id="key-name"
-					class="input"
-					type="text"
-					placeholder="Production"
-					bind:value={name}
-				/>
-			</div>
+		<form
+			method="POST"
+			action="?/create"
+			use:enhance={() => {
+				creating = true;
 
-			<div class="actions">
-				<Button onclick={createKey} disabled={creating}>
-					{creating ? 'Creating...' : 'Create API key'}
-				</Button>
+				return async ({ result, update }) => {
+					creating = false;
+					await update();
+
+					if (result.type === 'success') {
+						const data = result.data as ActionData | undefined;
+
+						if (data?.createdKey) {
+							createdKey = data.createdKey;
+							storeRawKey(data.createdKey);
+							name = '';
+							await invalidateAll();
+						}
+					}
+				};
+			}}
+		>
+			<div class="create-row">
+				<div class="field">
+					<label class="label" for="key-name">Key name</label>
+					<input
+						id="key-name"
+						name="name"
+						class="input"
+						type="text"
+						placeholder="Production"
+						bind:value={name}
+					/>
+				</div>
+
+				<div class="actions">
+					<Button type="submit" disabled={creating}>
+						{creating ? 'Creating...' : 'Create API key'}
+					</Button>
+				</div>
 			</div>
-		</div>
+		</form>
 
 		{#if createError}
 			<p class="error">{createError}</p>
@@ -176,7 +162,7 @@
 		{/if}
 	</Card>
 
-	<Card class="panel list-panel">
+	<Card class="list-panel">
 		<div class="list-header">
 			<div>
 				<h2 class="section-title">Existing keys</h2>
@@ -186,7 +172,11 @@
 			</div>
 		</div>
 
-		{#if keys.length === 0}
+		{#if revokeError}
+			<p class="error">{revokeError}</p>
+		{/if}
+
+		{#if keys().length === 0}
 			<div class="empty-state">
 				<p class="empty-title">No API keys yet</p>
 				<p class="empty-copy">
@@ -207,7 +197,7 @@
 					</thead>
 
 					<tbody>
-						{#each keys as key}
+						{#each keys() as key}
 							<tr>
 								<td>{key.name}</td>
 								<td>
@@ -223,14 +213,30 @@
 									{#if key.revoked}
 										<span class="muted">—</span>
 									{:else}
-										<Button
-											size="sm"
-											variant="ghost"
-											onclick={() => revokeKey(key.keyId)}
-											disabled={revokingKeyId === key.keyId}
+										<form
+											method="POST"
+											action="?/revoke"
+											use:enhance={() => {
+												revokingKeyId = key.keyId;
+
+												return async ({ update }) => {
+													revokingKeyId = null;
+													await update();
+													await invalidateAll();
+												};
+											}}
 										>
-											{revokingKeyId === key.keyId ? 'Revoking...' : 'Revoke'}
-										</Button>
+											<input type="hidden" name="keyId" value={key.keyId} />
+
+											<Button
+												size="sm"
+												variant="ghost"
+												type="submit"
+												disabled={revokingKeyId === key.keyId}
+											>
+												{revokingKeyId === key.keyId ? 'Revoking...' : 'Revoke'}
+											</Button>
+										</form>
 									{/if}
 								</td>
 							</tr>
@@ -246,10 +252,6 @@
 	.keys-page {
 		display: grid;
 		gap: 1rem;
-	}
-
-	.panel {
-		min-height: 100%;
 	}
 
 	.section-title {

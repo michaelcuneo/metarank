@@ -1,7 +1,24 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import ApiStatus from '$lib/components/ApiStatus.svelte';
+
+	type Usage = {
+		period: string;
+		requestsUsed: number;
+		requestsLimit: number;
+		plan: 'free_user' | 'pro' | 'team';
+	};
+
+	let { data, children } = $props<{
+		data: {
+			userId: string;
+			usage: Usage;
+		};
+		children: import('svelte').Snippet;
+	}>();
 
 	const nav = [
+		{ href: '/dashboard/generate', label: 'Generate' },
 		{ href: '/dashboard', label: 'Overview' },
 		{ href: '/dashboard/usage', label: 'Usage' },
 		{ href: '/dashboard/api-keys', label: 'API Keys' },
@@ -24,6 +41,24 @@
 		const section = pathname.split('/')[2] ?? '';
 		return section.replace(/-/g, ' ');
 	}
+
+	function formatPlan(plan: Usage['plan']) {
+		switch (plan) {
+			case 'pro':
+				return 'Pro';
+			case 'team':
+				return 'Team';
+			default:
+				return 'Free';
+		}
+	}
+
+	const usagePercent = $derived(
+		Math.min(
+			100,
+			Math.round((data.usage.requestsUsed / Math.max(data.usage.requestsLimit, 1)) * 100)
+		)
+	);
 </script>
 
 <div class="dashboard-layout">
@@ -47,13 +82,23 @@
 			</nav>
 
 			<div class="sidebar-usage">
-				<p class="usage-label">Usage</p>
-
-				<div class="usage-bar">
-					<div class="usage-fill" style="width: 21%"></div>
+				<div class="usage-head">
+					<p class="usage-label">Usage</p>
+					<span class="usage-plan">{formatPlan(data.usage.plan)}</span>
 				</div>
 
-				<p class="usage-meta">42 / 200 requests</p>
+				<div class="usage-bar">
+					<div class="usage-fill" style={`width: ${usagePercent}%`}></div>
+				</div>
+
+				<p class="usage-meta">
+					{data.usage.requestsUsed} / {data.usage.requestsLimit} requests
+				</p>
+			</div>
+
+			<div class="sidebar-status">
+				<p class="usage-label">Service status</p>
+				<p class="usage-meta"><ApiStatus /></p>
 			</div>
 		</div>
 	</aside>
@@ -68,7 +113,7 @@
 			{/if}
 		</div>
 
-		<slot />
+		{@render children()}
 	</main>
 </div>
 
@@ -145,12 +190,32 @@
 		border-top: 1px solid var(--color-border);
 	}
 
+	.sidebar-status {
+		margin-top: 2rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.usage-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-bottom: 0.45rem;
+	}
+
 	.usage-label {
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--color-text-subtle);
-		margin: 0 0 0.45rem;
+		margin: 0;
+	}
+
+	.usage-plan {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: var(--color-text-muted);
 	}
 
 	.usage-bar {

@@ -1,1 +1,0 @@
-import{a9 as t,a1 as b,X as h,e as k,aa as S}from"./C0TdTIal.js";function u(r,a){return r===a||r?.[S]===a}function d(r={},a,f,T){return t(()=>{var i,s;return b(()=>{i=s,s=[],k(()=>{r!==f(...s)&&(a(r,...s),i&&u(f(...i),r)&&a(null,...i))})}),()=>{h(()=>{s&&u(f(...s),r)&&a(null,...s)})}}),r}export{d as b};

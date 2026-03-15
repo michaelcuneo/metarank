@@ -8,12 +8,12 @@ function getCurrentPeriod(): string {
 
 export function getPlanLimit(plan: string): number {
 	switch (plan) {
-		case 'scale':
-			return 10000;
+		case 'team':
+			return 25000;
 		case 'pro':
-			return 1000;
+			return 5000;
 		default:
-			return 200;
+			return 25;
 	}
 }
 

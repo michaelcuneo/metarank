@@ -7,10 +7,10 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["favicon.svg"]),
-	mimeTypes: {".svg":"image/svg+xml"},
+	assets: new Set(["apple-touch-icon.png","favicon-96x96.png","favicon.ico","favicon.svg","site.webmanifest","web-app-manifest-192x192.png","web-app-manifest-512x512.png"]),
+	mimeTypes: {".png":"image/png",".svg":"image/svg+xml",".webmanifest":"application/manifest+json"},
 	_: {
-		client: {start:"_app/immutable/entry/start.Dfjs4M8Y.js",app:"_app/immutable/entry/app.GQXmWI13.js",imports:["_app/immutable/entry/start.Dfjs4M8Y.js","_app/immutable/chunks/C-DJC-h7.js","_app/immutable/chunks/C0TdTIal.js","_app/immutable/chunks/BfU4V923.js","_app/immutable/entry/app.GQXmWI13.js","_app/immutable/chunks/C0TdTIal.js","_app/immutable/chunks/B6Lh7vbX.js","_app/immutable/chunks/Bu7Q5KXf.js","_app/immutable/chunks/BfU4V923.js","_app/immutable/chunks/C5kQKzcA.js","_app/immutable/chunks/Ct8GaGot.js","_app/immutable/chunks/Cpnseoz8.js","_app/immutable/chunks/CZg0sGa3.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:true},
+		client: {start:"_app/immutable/entry/start.DauhVifZ.js",app:"_app/immutable/entry/app.BYpm8t6r.js",imports:["_app/immutable/entry/start.DauhVifZ.js","_app/immutable/chunks/B9rfN3sF.js","_app/immutable/chunks/BCBSocac.js","_app/immutable/chunks/9hBVOzVF.js","_app/immutable/chunks/B4ZM7FXc.js","_app/immutable/entry/app.BYpm8t6r.js","_app/immutable/chunks/9hBVOzVF.js","_app/immutable/chunks/B4ZM7FXc.js","_app/immutable/chunks/DsnmJJEf.js","_app/immutable/chunks/BCBSocac.js","_app/immutable/chunks/LVNYBr06.js","_app/immutable/chunks/DUmB1paV.js","_app/immutable/chunks/DZN_GAO8.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:true},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
@@ -23,8 +23,7 @@ return {
 			__memo(() => import('./nodes/8.js')),
 			__memo(() => import('./nodes/9.js')),
 			__memo(() => import('./nodes/10.js')),
-			__memo(() => import('./nodes/11.js')),
-			__memo(() => import('./nodes/12.js'))
+			__memo(() => import('./nodes/11.js'))
 		],
 		remotes: {
 			
@@ -52,11 +51,25 @@ return {
 				endpoint: __memo(() => import('./entries/endpoints/api/account/_server.ts.js'))
 			},
 			{
+				id: "/api/account/internal/sync",
+				pattern: /^\/api\/account\/internal\/sync\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('./entries/endpoints/api/account/internal/sync/_server.ts.js'))
+			},
+			{
 				id: "/api/billing",
 				pattern: /^\/api\/billing\/?$/,
 				params: [],
 				page: null,
 				endpoint: __memo(() => import('./entries/endpoints/api/billing/_server.ts.js'))
+			},
+			{
+				id: "/api/generate",
+				pattern: /^\/api\/generate\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('./entries/endpoints/api/generate/_server.ts.js'))
 			},
 			{
 				id: "/api/keys",
@@ -71,6 +84,13 @@ return {
 				params: [{"name":"keyId","optional":false,"rest":false,"chained":false}],
 				page: null,
 				endpoint: __memo(() => import('./entries/endpoints/api/keys/_keyId_/_server.ts.js'))
+			},
+			{
+				id: "/api/status",
+				pattern: /^\/api\/status\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('./entries/endpoints/api/status/_server.ts.js'))
 			},
 			{
 				id: "/api/usage",
@@ -108,22 +128,22 @@ return {
 				endpoint: null
 			},
 			{
-				id: "/dashboard/usage",
-				pattern: /^\/dashboard\/usage\/?$/,
+				id: "/dashboard/generate",
+				pattern: /^\/dashboard\/generate\/?$/,
 				params: [],
 				page: { layouts: [0,2,], errors: [1,,], leaf: 8 },
 				endpoint: null
 			},
 			{
-				id: "/docs",
-				pattern: /^\/docs\/?$/,
+				id: "/dashboard/usage",
+				pattern: /^\/dashboard\/usage\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 9 },
+				page: { layouts: [0,2,], errors: [1,,], leaf: 9 },
 				endpoint: null
 			},
 			{
-				id: "/generate",
-				pattern: /^\/generate\/?$/,
+				id: "/docs",
+				pattern: /^\/docs\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 10 },
 				endpoint: null
@@ -133,13 +153,6 @@ return {
 				pattern: /^\/pricing\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 11 },
-				endpoint: null
-			},
-			{
-				id: "/signin",
-				pattern: /^\/signin\/?$/,
-				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 12 },
 				endpoint: null
 			}
 		],

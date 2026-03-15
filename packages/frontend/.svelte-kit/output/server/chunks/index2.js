@@ -1,5 +1,5 @@
 import { clsx as clsx$1 } from "clsx";
-import { B as BROWSER } from "./false.js";
+import { D as DEV } from "./false.js";
 import * as devalue from "devalue";
 var is_array = Array.isArray;
 var index_of = Array.prototype.indexOf;
@@ -596,12 +596,12 @@ function flush_effects() {
       var batch = Batch.ensure();
       if (flush_count++ > 1e3) {
         var updates, entry;
-        if (BROWSER) ;
+        if (DEV) ;
         infinite_loop_guard();
       }
       batch.process(queued_root_effects);
       old_values.clear();
-      if (BROWSER) ;
+      if (DEV) ;
     }
   } finally {
     queued_root_effects = [];
@@ -1701,7 +1701,7 @@ function update_effect(effect) {
     effect.teardown = typeof teardown === "function" ? teardown : null;
     effect.wv = write_version;
     var dep;
-    if (BROWSER && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
+    if (DEV && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
   } finally {
     is_updating_effect = was_updating_effect;
     active_effect = previous_effect;
@@ -3005,15 +3005,6 @@ function unsubscribe_stores(store_values) {
     store_values[store_name][1]();
   }
 }
-function slot(renderer, $$props, name, slot_props, fallback_fn) {
-  var slot_fn = $$props.$$slots?.[name];
-  if (slot_fn === true) {
-    slot_fn = $$props["children"];
-  }
-  if (slot_fn !== void 0) {
-    slot_fn(renderer, slot_props);
-  }
-}
 function bind_props(props_parent, props_now) {
   for (const key of Object.keys(props_now)) {
     const initial_value = props_parent[key];
@@ -3081,7 +3072,7 @@ export {
   component_context as Y,
   internal_set as Z,
   destroy_effect as _,
-  attr_class as a,
+  attr_style as a,
   svelte_boundary_reset_onerror as a0,
   HYDRATION_START_FAILED as a1,
   EFFECT_TRANSPARENT as a2,
@@ -3101,15 +3092,15 @@ export {
   flushSync as ag,
   mutable_source as ah,
   render as ai,
-  ensure_array_like as b,
-  attr as c,
+  attr_class as b,
+  clsx as c,
   derived as d,
   escape_html as e,
-  store_get as f,
+  ensure_array_like as f,
   getContext as g,
-  slot as h,
-  head as i,
-  attr_style as j,
+  attr as h,
+  store_get as i,
+  head as j,
   attributes as k,
   bind_props as l,
   element as m,

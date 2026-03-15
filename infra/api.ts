@@ -1,11 +1,15 @@
 import {
 	usersTable,
-  usageSnapshotsTable,
+	usageSnapshotsTable,
 	billingTable,
 	apiKeysTable,
-	seoCacheTable
+	seoCacheTable,
+	seoLocksTable
 } from './tables';
 import { OpenAIKey, ClerkPublishableKey } from './config';
+import { domain } from './domain.js';
+
+const isProd = $app.stage === 'production';
 
 const metarankApi = new sst.aws.ApiGatewayV2('MetarankAPI', {
 	link: [
@@ -14,9 +18,15 @@ const metarankApi = new sst.aws.ApiGatewayV2('MetarankAPI', {
 		billingTable,
 		apiKeysTable,
 		seoCacheTable,
+		seoLocksTable,
 		OpenAIKey,
 		ClerkPublishableKey
 	],
+	...(isProd && {
+		domain: {
+			name: domain({ subdomain: 'api' })
+		}
+	}),
 	cors: {
 		allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
 		allowOrigins: ['*'],

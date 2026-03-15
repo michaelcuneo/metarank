@@ -2,6 +2,8 @@
 	import Card from '$lib/components/Card.svelte';
 	import Button from '$lib/components/Button.svelte';
 
+	let { data } = $props();
+
 	const copy = (text: string) => navigator.clipboard.writeText(text);
 
 	const curlExample = `curl -X POST https://api.metarank.dev/v1/seo/meta \\
@@ -151,8 +153,18 @@
 			Try MetaRank in the browser or integrate it directly using the API.
 		</p>
 		<div class="cta-actions">
-			<Button as="a" href="/generate">Get an API key</Button>
-			<Button as="a" href="/generate" variant="ghost">Try the generator</Button>
+			{#if data.auth.isSignedIn}
+				<Button as="a" href="/dashboard/generate" size="lg">
+					Try the generator
+				</Button>
+			{:else}
+				<Button as="a" href="/signup" size="lg">
+					Get started free
+				</Button>
+			{/if}
+			<Button as="a" href="/docs" size="lg" variant="ghost">
+				View API docs
+			</Button>
 		</div>
 	</Card>
 </div>
@@ -174,14 +186,6 @@
 		line-height: 1.06;
 		letter-spacing: -0.03em;
 		font-weight: 700;
-	}
-
-	.lead {
-		margin: 0.85rem 0 0;
-		color: var(--color-text-muted);
-		font-size: 1rem;
-		line-height: 1.65;
-		max-width: 68ch;
 	}
 
 	section {
@@ -219,12 +223,6 @@
 		line-height: 1.6;
 	}
 
-	.endpoint {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
 	.method {
 		font-size: 0.72rem;
 		font-weight: 600;
@@ -235,10 +233,6 @@
 		background: color-mix(in srgb, var(--primary-bg) 12%, transparent);
 		color: var(--primary-bg);
 		border: 1px solid color-mix(in srgb, var(--primary-bg) 24%, transparent);
-	}
-
-	.example-block + .example-block {
-		margin-top: 1rem;
 	}
 
 	.example-header {
@@ -274,24 +268,6 @@
 		margin-top: 0.9rem;
 		font-size: 0.92rem;
 		color: var(--color-text-muted);
-	}
-
-	.cta {
-		margin-top: 3rem;
-		text-align: center;
-	}
-
-	.cta h2 {
-		margin: 0;
-		font-size: 1.2rem;
-		font-weight: 600;
-		letter-spacing: -0.02em;
-	}
-
-	.cta p {
-		margin: 0.65rem auto 0;
-		color: var(--color-text-muted);
-		max-width: 60ch;
 	}
 
 	.cta-actions {

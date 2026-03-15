@@ -26,6 +26,10 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Dynamo"
     }
+    "MetarankSeoLocks": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "MetarankUsageSnapshots": {
       "name": string
       "type": "sst.aws.Dynamo"

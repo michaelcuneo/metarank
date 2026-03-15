@@ -1,8 +1,17 @@
 import { requireApiKeyUser } from './_shared/auth';
 import { getCachedSeoMeta, setCachedSeoMeta } from './_shared/cache';
 import { createSeoCacheKey } from './_shared/cacheKey';
+import { acquireSeoLock, releaseSeoLock } from './_shared/lock';
+import { waitForCachedSeoMeta } from './_shared/waitForCache';
 import { getBilling, getCurrentUsage, getPlanLimit, incrementUsage } from './_shared/usage';
-import { ok, badRequest, unauthorized, forbidden, tooManyRequests, internalError } from './_shared/http';
+import {
+	ok,
+	badRequest,
+	unauthorized,
+	forbidden,
+	tooManyRequests,
+	internalError
+} from './_shared/http';
 import { generateSeoMeta } from './_shared/generateSeoMeta';
 
 type GenerateSeoRequest = {
@@ -11,6 +20,15 @@ type GenerateSeoRequest = {
 	location?: string;
 	targetQuery?: string;
 };
+
+function normalizeRequestBody(body: GenerateSeoRequest): GenerateSeoRequest {
+	return {
+		title: body.title?.trim() ?? '',
+		body: body.body?.trim() ?? '',
+		location: body.location?.trim() || undefined,
+		targetQuery: body.targetQuery?.trim() || undefined
+	};
+}
 
 export async function handler(event: any) {
 	try {
@@ -24,14 +42,26 @@ export async function handler(event: any) {
 			return badRequest('Request body is required');
 		}
 
-		const body = JSON.parse(event.body) as GenerateSeoRequest;
+		let parsedBody: GenerateSeoRequest;
 
-		if (!body.title?.trim()) {
+		try {
+			parsedBody = JSON.parse(event.body);
+		} catch {
+			return badRequest('Invalid JSON body');
+		}
+
+		const body = normalizeRequestBody(parsedBody);
+
+		if (!body.title) {
 			return badRequest('Title is required');
 		}
 
-		if (!body.body?.trim()) {
+		if (!body.body) {
 			return badRequest('Body is required');
+		}
+
+		if (body.body.length > 10_000) {
+			return badRequest('Body exceeds maximum length');
 		}
 
 		const billing = await getBilling(user.userId);
@@ -43,7 +73,13 @@ export async function handler(event: any) {
 			return tooManyRequests('Monthly usage limit reached');
 		}
 
-		const cacheKey = createSeoCacheKey(body);
+		const cacheKey = createSeoCacheKey({
+			title: body.title,
+			body: body.body,
+			location: body.location,
+			targetQuery: body.targetQuery
+		});
+
 		const cached = await getCachedSeoMeta(cacheKey);
 
 		if (cached) {
@@ -54,16 +90,46 @@ export async function handler(event: any) {
 			});
 		}
 
-		const result = await generateSeoMeta(body);
+		const lock = await acquireSeoLock(cacheKey);
 
-		await Promise.all([
-			setCachedSeoMeta(cacheKey, result),
-			incrementUsage(user.userId)
-		]);
+		if (!lock) {
+			const waited = await waitForCachedSeoMeta(cacheKey, {
+				attempts: 10,
+				delayMs: 400
+			});
 
-		return ok(result, {
-			'X-MetaRank-Cache': 'miss'
-		});
+			if (waited) {
+				await incrementUsage(user.userId);
+
+				return ok(waited, {
+					'X-MetaRank-Cache': 'hit-after-wait'
+				});
+			}
+
+			const retryCached = await getCachedSeoMeta(cacheKey);
+
+			if (retryCached) {
+				await incrementUsage(user.userId);
+
+				return ok(retryCached, {
+					'X-MetaRank-Cache': 'late-hit'
+				});
+			}
+		}
+
+		try {
+			const result = await generateSeoMeta(body);
+
+			await Promise.all([setCachedSeoMeta(cacheKey, result), incrementUsage(user.userId)]);
+
+			return ok(result, {
+				'X-MetaRank-Cache': 'miss'
+			});
+		} finally {
+			if (lock) {
+				await releaseSeoLock(lock);
+			}
+		}
 	} catch (err: any) {
 		if (err?.message === 'Invalid API key') {
 			return unauthorized('Invalid API key');

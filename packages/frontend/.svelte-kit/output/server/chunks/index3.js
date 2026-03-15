@@ -11,9 +11,6 @@ const page$1 = {
   get error() {
     return context().page.error;
   },
-  get params() {
-    return context().page.params;
-  },
   get status() {
     return context().page.status;
   },

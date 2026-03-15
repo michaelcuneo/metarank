@@ -11,6 +11,9 @@ export const load: LayoutServerLoad = async ({ locals, cookies }) => {
 		});
 	}
 	return {
-		...buildClerkProps(locals.auth())
+		...buildClerkProps(locals.auth()),
+		auth: {
+			isSignedIn: Boolean(locals.auth().userId)
+		}
 	};
 };

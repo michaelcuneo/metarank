@@ -48,6 +48,20 @@
       "_shared-server.js"
     ]
   },
+  "_ApiStatus.RpHLte5x.css": {
+    "file": "_app/immutable/assets/ApiStatus.RpHLte5x.css",
+    "src": "_ApiStatus.RpHLte5x.css"
+  },
+  "_ApiStatus.js": {
+    "file": "chunks/ApiStatus.js",
+    "name": "ApiStatus",
+    "imports": [
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/ApiStatus.RpHLte5x.css"
+    ]
+  },
   "_Button.RirIoEf4.css": {
     "file": "_app/immutable/assets/Button.RirIoEf4.css",
     "src": "_Button.RirIoEf4.css"
@@ -89,6 +103,13 @@
   "_DashboardPageHeader.zaRsiiin.css": {
     "file": "_app/immutable/assets/DashboardPageHeader.zaRsiiin.css",
     "src": "_DashboardPageHeader.zaRsiiin.css"
+  },
+  "_PricingTable.js": {
+    "file": "chunks/PricingTable.js",
+    "name": "PricingTable",
+    "imports": [
+      "_errorThrower.js"
+    ]
   },
   "_clerkClient.js": {
     "file": "chunks/clerkClient.js",
@@ -240,11 +261,12 @@
       "_utils.js",
       "_root.js",
       "_state.svelte.js",
+      "_ApiStatus.js",
       "_client.js",
       "_getDynamicPublicEnvVariables.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.tD9rx1EQ.css"
+      "_app/immutable/assets/_layout.5FPM4w76.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -253,6 +275,7 @@
     "src": "src/routes/+page.svelte",
     "isEntry": true,
     "imports": [
+      "_client.js",
       "_Button.js",
       "_Card.js"
     ],
@@ -279,10 +302,22 @@
     "src": "src/routes/api/account/+server.ts",
     "isEntry": true
   },
+  "src/routes/api/account/internal/sync/+server.ts": {
+    "file": "entries/endpoints/api/account/internal/sync/_server.ts.js",
+    "name": "entries/endpoints/api/account/internal/sync/_server.ts",
+    "src": "src/routes/api/account/internal/sync/+server.ts",
+    "isEntry": true
+  },
   "src/routes/api/billing/+server.ts": {
     "file": "entries/endpoints/api/billing/_server.ts.js",
     "name": "entries/endpoints/api/billing/_server.ts",
     "src": "src/routes/api/billing/+server.ts",
+    "isEntry": true
+  },
+  "src/routes/api/generate/+server.ts": {
+    "file": "entries/endpoints/api/generate/_server.ts.js",
+    "name": "entries/endpoints/api/generate/_server.ts",
+    "src": "src/routes/api/generate/+server.ts",
     "isEntry": true
   },
   "src/routes/api/keys/+server.ts": {
@@ -295,6 +330,12 @@
     "file": "entries/endpoints/api/keys/_keyId_/_server.ts.js",
     "name": "entries/endpoints/api/keys/_keyId_/_server.ts",
     "src": "src/routes/api/keys/[keyId]/+server.ts",
+    "isEntry": true
+  },
+  "src/routes/api/status/+server.ts": {
+    "file": "entries/endpoints/api/status/_server.ts.js",
+    "name": "entries/endpoints/api/status/_server.ts",
+    "src": "src/routes/api/status/+server.ts",
     "isEntry": true
   },
   "src/routes/api/usage/+server.ts": {
@@ -325,10 +366,11 @@
       "_exports.js",
       "_utils.js",
       "_root.js",
-      "_state.svelte.js"
+      "_state.svelte.js",
+      "_ApiStatus.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.BCbQioBJ.css"
+      "_app/immutable/assets/_layout.Cc5-dxqW.css"
     ]
   },
   "src/routes/dashboard/+page.server.ts": {
@@ -349,7 +391,7 @@
       "_DashboardPageHeader.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.DVjkbf3-.css"
+      "_app/immutable/assets/_page.DN-FAwhv.css"
     ]
   },
   "src/routes/dashboard/api-keys/+page.server.ts": {
@@ -365,6 +407,10 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js",
       "_Card.js",
       "_Button.js",
       "_DashboardPageHeader.js"
@@ -385,12 +431,43 @@
     "src": "src/routes/dashboard/billing/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_Card.js",
+      "_errorThrower.js",
+      "_PricingTable.js",
+      "_client.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js",
       "_Button.js",
       "_DashboardPageHeader.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.DXON0-LY.css"
+      "_app/immutable/assets/_page.Ci-_jptl.css"
+    ]
+  },
+  "src/routes/dashboard/generate/+page.server.ts": {
+    "file": "entries/pages/dashboard/generate/_page.server.ts.js",
+    "name": "entries/pages/dashboard/generate/_page.server.ts",
+    "src": "src/routes/dashboard/generate/+page.server.ts",
+    "isEntry": true
+  },
+  "src/routes/dashboard/generate/+page.svelte": {
+    "file": "entries/pages/dashboard/generate/_page.svelte.js",
+    "name": "entries/pages/dashboard/generate/_page.svelte",
+    "src": "src/routes/dashboard/generate/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js",
+      "_Button.js",
+      "_Card.js",
+      "_DashboardPageHeader.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.Dhy6MkhT.css"
     ]
   },
   "src/routes/dashboard/usage/+page.server.ts": {
@@ -405,12 +482,13 @@
     "src": "src/routes/dashboard/usage/+page.svelte",
     "isEntry": true,
     "imports": [
+      "_index2.js",
       "_Card.js",
       "_Button.js",
       "_DashboardPageHeader.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.DkaH9X-0.css"
+      "_app/immutable/assets/_page.DteAaKJs.css"
     ]
   },
   "src/routes/docs/+page.svelte": {
@@ -426,20 +504,6 @@
       "_app/immutable/assets/_page.pKIlpJj4.css"
     ]
   },
-  "src/routes/generate/+page.svelte": {
-    "file": "entries/pages/generate/_page.svelte.js",
-    "name": "entries/pages/generate/_page.svelte",
-    "src": "src/routes/generate/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index2.js",
-      "_Button.js",
-      "_Card.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page.BAxMKTb7.css"
-    ]
-  },
   "src/routes/pricing/+page.svelte": {
     "file": "entries/pages/pricing/_page.svelte.js",
     "name": "entries/pages/pricing/_page.svelte",
@@ -448,6 +512,7 @@
     "imports": [
       "_Button.js",
       "_errorThrower.js",
+      "_PricingTable.js",
       "_client.js",
       "_exports.js",
       "_utils.js",
@@ -455,27 +520,7 @@
       "_state.svelte.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.BokuD1lK.css",
-      "_app/immutable/assets/Card.CA5pE5O8.css"
-    ]
-  },
-  "src/routes/signin/+page.svelte": {
-    "file": "entries/pages/signin/_page.svelte.js",
-    "name": "entries/pages/signin/_page.svelte",
-    "src": "src/routes/signin/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index2.js",
-      "_errorThrower.js",
-      "_index3.js",
-      "_client.js",
-      "_exports.js",
-      "_utils.js",
-      "_root.js",
-      "_state.svelte.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page.DncEB2O7.css"
+      "_app/immutable/assets/_page.B2A99lQg.css"
     ]
   }
 }

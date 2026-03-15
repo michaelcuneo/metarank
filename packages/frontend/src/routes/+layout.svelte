@@ -14,7 +14,6 @@
 	config.autoAddCss = false;
 
 	let { children }: { children: Snippet } = $props();
-	$inspect(children);
 </script>
 
 <ClerkProvider publishableKey={PUBLIC_CLERK_PUBLISHABLE_KEY}>

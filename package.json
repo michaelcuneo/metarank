@@ -13,5 +13,8 @@
 	"devDependencies": {
 		"@aws-sdk/client-dynamodb": "^3.1008.0",
 		"@aws-sdk/lib-dynamodb": "^3.1008.0"
+	},
+	"dependencies": {
+		"svelte-clerk": "^1.0.2"
 	}
 }

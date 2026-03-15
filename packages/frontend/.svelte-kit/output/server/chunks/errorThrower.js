@@ -91,11 +91,10 @@ const UserButton = Object.assign(UserButton$1, {
   Link: UserButtonLink,
   UserProfilePage: UserButtonUserProfilePage
 });
-const errorThrower = buildErrorThrower({ packageName: "svelte-clerk" });
+buildErrorThrower({ packageName: "svelte-clerk" });
 export {
   ClerkLoaded as C,
   UserButton as U,
-  errorThrower as e,
   setClerkContext as s,
   useClerkContext as u
 };

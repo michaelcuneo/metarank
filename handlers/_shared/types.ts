@@ -1,4 +1,4 @@
-export type Plan = 'free_user' | 'pro' | 'scale';
+export type Plan = 'free_user' | 'pro' | 'team';
 
 export type UserRecord = {
 	userId: string;

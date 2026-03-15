@@ -1,19 +1,46 @@
 import type { Handle } from '@sveltejs/kit';
 import crypto from 'node:crypto';
-import { Resource } from 'sst';
 import { clerkClient } from 'svelte-clerk/server';
+
+type Plan = 'free_user' | 'pro' | 'team';
+
+type SyncedAccount = {
+	userId: string;
+	plan: Plan;
+	updatedAt: number;
+};
 
 function hash(data: object) {
 	return crypto.createHash('sha256').update(JSON.stringify(data)).digest('base64url');
 }
 
 function getPlanForUser(auth: ClerkAuthObject | null): Plan {
-	if (auth?.has({ plan: 'scale' })) return 'scale';
+	if (auth?.has({ plan: 'team' })) return 'team';
 	if (auth?.has({ plan: 'pro' })) return 'pro';
 	return 'free_user';
 }
 
 const WEEK = 7 * 24 * 60 * 60 * 1000;
+
+async function getCurrentAccount(fetchFn: typeof fetch): Promise<SyncedAccount | null> {
+	try {
+		const res = await fetchFn('/api/account');
+
+		if (!res.ok) {
+			return null;
+		}
+
+		const data = (await res.json()) as SyncedAccount & Record<string, unknown>;
+
+		return {
+			userId: String(data.userId),
+			plan: (data.plan as Plan) ?? 'free_user',
+			updatedAt: Number(data.updatedAt ?? Date.now())
+		};
+	} catch {
+		return null;
+	}
+}
 
 export const syncUserHandle: Handle = async ({ event, resolve }) => {
 	const auth = event.locals.auth?.();
@@ -25,16 +52,29 @@ export const syncUserHandle: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const now = Date.now();
-	const cookieHash = event.cookies.get('user_hash');
-	const cookieAt = Number(event.cookies.get('user_hash_set_at') || 0);
-
-	if (cookieHash && cookieAt && now - cookieAt < WEEK) {
+	if (event.url.pathname.startsWith('/api')) {
 		return resolve(event);
 	}
 
-	const clerkUser = await clerkClient.users.getUser(userId);
+	const now = Date.now();
+	const cookieHash = event.cookies.get('user_hash');
+	const cookieAt = Number(event.cookies.get('user_hash_set_at') || 0);
 	const clerkPlan = getPlanForUser(auth);
+
+	const currentAccount = await getCurrentAccount(event.fetch);
+	const storedPlan = currentAccount?.plan ?? 'free_user';
+	const planChanged = storedPlan !== clerkPlan;
+
+	if (!planChanged && cookieHash && cookieAt && now - cookieAt < WEEK) {
+		return resolve(event);
+	}
+
+	if (planChanged) {
+		event.cookies.delete('user_hash', { path: '/' });
+		event.cookies.delete('user_hash_set_at', { path: '/' });
+	}
+
+	const clerkUser = await clerkClient.users.getUser(userId);
 
 	const payload = {
 		userId,
@@ -46,9 +86,11 @@ export const syncUserHandle: Handle = async ({ event, resolve }) => {
 		lastActiveAt: now
 	};
 
-	const res = await fetch(`${Resource.MetarankAPI.url}/v1/account/internal/sync`, {
+	const res = await event.fetch('/api/account/internal/sync', {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: {
+			'Content-Type': 'application/json'
+		},
 		body: JSON.stringify(payload)
 	});
 
@@ -56,7 +98,7 @@ export const syncUserHandle: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const account = await res.json();
+	const account = (await res.json()) as SyncedAccount;
 
 	const newHash = hash({
 		id: userId,

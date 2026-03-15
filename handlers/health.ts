@@ -6,7 +6,8 @@ export async function handler() {
 		},
 		body: JSON.stringify({
 			ok: true,
-			service: 'metarank-api'
+			service: 'metarank-api',
+			timestamp: new Date().toISOString()
 		})
 	};
 }
