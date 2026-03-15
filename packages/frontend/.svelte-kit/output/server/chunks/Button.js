@@ -1,4 +1,4 @@
-import { m as element, k as attributes } from "./index2.js";
+import { l as element, j as attributes } from "./index2.js";
 function Button($$renderer, $$props) {
   let {
     as = "button",

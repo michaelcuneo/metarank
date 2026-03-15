@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
 	import Card from '$lib/components/Card.svelte';
+	import { SignInButton } from 'svelte-clerk';
 
 	let { data } = $props();
  </script>
@@ -22,9 +22,9 @@
 					Try the generator
 				</Button>
 			{:else}
-				<Button as="a" href="/signup" size="lg">
+				<SignInButton class="clerk-user-button">
 					Get started free
-				</Button>
+				</SignInButton>
 			{/if}
 			<Button as="a" href="/docs" size="lg" variant="ghost">
 				View API docs
@@ -84,9 +84,9 @@
 					Try the generator
 				</Button>
 			{:else}
-				<Button as="a" href="/signup" size="lg">
+				<SignInButton class="clerk-user-button">
 					Get started free
-				</Button>
+				</SignInButton>
 			{/if}
 			<Button as="a" href="/docs" size="lg" variant="ghost">
 				View API docs

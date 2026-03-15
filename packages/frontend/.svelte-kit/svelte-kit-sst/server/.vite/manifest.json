@@ -111,6 +111,14 @@
       "_errorThrower.js"
     ]
   },
+  "_SignInButton.js": {
+    "file": "chunks/SignInButton.js",
+    "name": "SignInButton",
+    "imports": [
+      "_index2.js",
+      "_errorThrower.js"
+    ]
+  },
   "_clerkClient.js": {
     "file": "chunks/clerkClient.js",
     "name": "clerkClient",
@@ -257,6 +265,7 @@
       "_index3.js",
       "_Button.js",
       "_errorThrower.js",
+      "_SignInButton.js",
       "_exports.js",
       "_utils.js",
       "_root.js",
@@ -275,9 +284,15 @@
     "src": "src/routes/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_client.js",
       "_Button.js",
-      "_Card.js"
+      "_Card.js",
+      "_errorThrower.js",
+      "_SignInButton.js",
+      "_client.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js"
     ],
     "css": [
       "_app/immutable/assets/_page.BiIaMjBy.css"
@@ -290,7 +305,14 @@
     "isEntry": true,
     "imports": [
       "_Card.js",
-      "_Button.js"
+      "_Button.js",
+      "_errorThrower.js",
+      "_SignInButton.js",
+      "_client.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js"
     ],
     "css": [
       "_app/immutable/assets/_page.SHOQQNKc.css"
@@ -438,7 +460,6 @@
       "_utils.js",
       "_root.js",
       "_state.svelte.js",
-      "_Button.js",
       "_DashboardPageHeader.js"
     ],
     "css": [
@@ -498,7 +519,14 @@
     "isEntry": true,
     "imports": [
       "_Card.js",
-      "_Button.js"
+      "_Button.js",
+      "_errorThrower.js",
+      "_SignInButton.js",
+      "_client.js",
+      "_exports.js",
+      "_utils.js",
+      "_root.js",
+      "_state.svelte.js"
     ],
     "css": [
       "_app/immutable/assets/_page.pKIlpJj4.css"
@@ -513,6 +541,7 @@
       "_Button.js",
       "_errorThrower.js",
       "_PricingTable.js",
+      "_SignInButton.js",
       "_client.js",
       "_exports.js",
       "_utils.js",

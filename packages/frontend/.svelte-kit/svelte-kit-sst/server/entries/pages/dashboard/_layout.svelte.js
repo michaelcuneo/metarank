@@ -1,4 +1,4 @@
-import { g as getContext, f as ensure_array_like, h as attr, b as attr_class, i as store_get, e as escape_html, a as attr_style, u as unsubscribe_stores, d as derived } from "../../../chunks/index2.js";
+import { g as getContext, b as ensure_array_like, c as attr, a as attr_class, f as store_get, e as escape_html, h as attr_style, u as unsubscribe_stores, d as derived } from "../../../chunks/index2.js";
 import "clsx";
 import "@sveltejs/kit/internal";
 import "../../../chunks/exports.js";

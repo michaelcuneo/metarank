@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { PricingTable } from 'svelte-clerk';
-	import Button from '$lib/components/Button.svelte';
 	import DashboardPageHeader from '../DashboardPageHeader.svelte';
 </script>
 

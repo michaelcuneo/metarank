@@ -1,10 +1,11 @@
 import "clsx";
 import { P as PUBLIC_CLERK_PUBLISHABLE_KEY } from "../../chunks/public.js";
-import { a as attr_style, b as attr_class, c as clsx, d as derived, s as spread_props, e as escape_html } from "../../chunks/index2.js";
+import { d as derived, s as spread_props, a as attr_class, e as escape_html } from "../../chunks/index2.js";
 import { p as page } from "../../chunks/index3.js";
 import { B as Button } from "../../chunks/Button.js";
 import { u as useClerkContext, s as setClerkContext, U as UserButton } from "../../chunks/errorThrower.js";
 import "@clerk/shared/authorization";
+import { S as SignInButton } from "../../chunks/SignInButton.js";
 import { deriveState } from "@clerk/shared/deriveState";
 import { setClerkJsLoadingErrorPackageName } from "@clerk/shared/loadClerkJsScript";
 import "@clerk/shared/underscore";
@@ -42,51 +43,6 @@ function SignedOut($$renderer, $$props) {
       $$renderer2.push(`<!---->`);
     } else {
       $$renderer2.push("<!--[!-->");
-    }
-    $$renderer2.push(`<!--]-->`);
-  });
-}
-function SignInButton($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    const {
-      mode,
-      children,
-      style,
-      class: buttonClass,
-      asChild,
-      $$slots,
-      $$events,
-      ...props
-    } = $$props;
-    const ctx = useClerkContext();
-    function signIn() {
-      if (!ctx.clerk) return;
-      if (mode === "modal") {
-        void ctx.clerk.openSignIn(props);
-        return;
-      }
-      void ctx.clerk.redirectToSignIn({
-        ...props,
-        signInFallbackRedirectUrl: props.fallbackRedirectUrl,
-        signInForceRedirectUrl: props.forceRedirectUrl
-      });
-    }
-    if (asChild) {
-      $$renderer2.push("<!--[-->");
-      children?.($$renderer2, { signIn });
-      $$renderer2.push(`<!---->`);
-    } else {
-      $$renderer2.push("<!--[!-->");
-      $$renderer2.push(`<button type="button"${attr_style(style)}${attr_class(clsx(buttonClass))}>`);
-      if (children) {
-        $$renderer2.push("<!--[-->");
-        children($$renderer2, { signIn });
-        $$renderer2.push(`<!---->`);
-      } else {
-        $$renderer2.push("<!--[!-->");
-        $$renderer2.push(`Sign in`);
-      }
-      $$renderer2.push(`<!--]--></button>`);
     }
     $$renderer2.push(`<!--]-->`);
   });

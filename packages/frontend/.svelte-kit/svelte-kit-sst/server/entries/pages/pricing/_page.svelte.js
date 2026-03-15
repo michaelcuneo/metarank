@@ -3,6 +3,7 @@ import { B as Button } from "../../../chunks/Button.js";
 import "../../../chunks/errorThrower.js";
 import { P as PricingTable } from "../../../chunks/PricingTable.js";
 import "@clerk/shared/authorization";
+import { S as SignInButton } from "../../../chunks/SignInButton.js";
 import "@clerk/shared/deriveState";
 import "@clerk/shared/loadClerkJsScript";
 import "../../../chunks/client.js";
@@ -33,10 +34,8 @@ function _page($$renderer, $$props) {
       });
     } else {
       $$renderer2.push("<!--[!-->");
-      Button($$renderer2, {
-        as: "a",
-        href: "/signup",
-        size: "lg",
+      SignInButton($$renderer2, {
+        class: "clerk-user-button",
         children: ($$renderer3) => {
           $$renderer3.push(`<!---->Get started free`);
         },

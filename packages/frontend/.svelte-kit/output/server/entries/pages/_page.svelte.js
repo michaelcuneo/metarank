@@ -1,7 +1,19 @@
 import "clsx";
-import "../../chunks/client.js";
 import { B as Button } from "../../chunks/Button.js";
 import { C as Card } from "../../chunks/Card.js";
+import "../../chunks/errorThrower.js";
+import "@clerk/shared/authorization";
+import { S as SignInButton } from "../../chunks/SignInButton.js";
+import "@clerk/shared/deriveState";
+import "@clerk/shared/loadClerkJsScript";
+import "../../chunks/client.js";
+import "@clerk/shared/underscore";
+import "@sveltejs/kit/internal";
+import "../../chunks/exports.js";
+import "../../chunks/utils.js";
+import "@sveltejs/kit/internal/server";
+import "../../chunks/root.js";
+import "../../chunks/state.svelte.js";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let { data } = $$props;
@@ -19,10 +31,8 @@ function _page($$renderer, $$props) {
       });
     } else {
       $$renderer2.push("<!--[!-->");
-      Button($$renderer2, {
-        as: "a",
-        href: "/signup",
-        size: "lg",
+      SignInButton($$renderer2, {
+        class: "clerk-user-button",
         children: ($$renderer3) => {
           $$renderer3.push(`<!---->Get started free`);
         },
@@ -91,10 +101,8 @@ function _page($$renderer, $$props) {
       });
     } else {
       $$renderer2.push("<!--[!-->");
-      Button($$renderer2, {
-        as: "a",
-        href: "/signup",
-        size: "lg",
+      SignInButton($$renderer2, {
+        class: "clerk-user-button",
         children: ($$renderer3) => {
           $$renderer3.push(`<!---->Get started free`);
         },

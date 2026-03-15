@@ -1,4 +1,4 @@
-import { b as attr_class } from "./index2.js";
+import { a as attr_class } from "./index2.js";
 function ApiStatus($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let status = { status: "offline" };
