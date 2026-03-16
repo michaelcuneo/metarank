@@ -6,6 +6,9 @@
 	"/about": [
 		"src/routes/+layout.server.ts"
 	],
+	"/ai-seo-api": [
+		"src/routes/+layout.server.ts"
+	],
 	"/api/account": [
 		"src/routes/api/account/+server.ts"
 	],
@@ -63,7 +66,28 @@
 	"/docs": [
 		"src/routes/+layout.server.ts"
 	],
+	"/meta-description-generator": [
+		"src/routes/+layout.server.ts"
+	],
+	"/meta-title-generator": [
+		"src/routes/+layout.server.ts"
+	],
 	"/pricing": [
 		"src/routes/+layout.server.ts"
+	],
+	"/robots.txt": [
+		"src/routes/robots.txt/+server.ts"
+	],
+	"/search-intent-api": [
+		"src/routes/+layout.server.ts"
+	],
+	"/seo-metadata-api": [
+		"src/routes/+layout.server.ts"
+	],
+	"/seo-tools": [
+		"src/routes/+layout.server.ts"
+	],
+	"/sitemap.xml": [
+		"src/routes/sitemap.xml/+server.ts"
 	]
 }

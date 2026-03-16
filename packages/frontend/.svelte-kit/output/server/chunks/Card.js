@@ -1,4 +1,4 @@
-import { l as element, j as attributes } from "./index2.js";
+import { ah as element, j as attributes } from "./index2.js";
 function Card($$renderer, $$props) {
   let {
     as = "div",

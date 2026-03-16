@@ -111,6 +111,22 @@
       "_errorThrower.js"
     ]
   },
+  "_SeoLandingPage.CAnnC5UR.css": {
+    "file": "_app/immutable/assets/SeoLandingPage.CAnnC5UR.css",
+    "src": "_SeoLandingPage.CAnnC5UR.css"
+  },
+  "_SeoLandingPage.js": {
+    "file": "chunks/SeoLandingPage.js",
+    "name": "SeoLandingPage",
+    "imports": [
+      "_index2.js",
+      "_Button.js",
+      "_Card.js"
+    ],
+    "css": [
+      "_app/immutable/assets/SeoLandingPage.CAnnC5UR.css"
+    ]
+  },
   "_SignInButton.js": {
     "file": "chunks/SignInButton.js",
     "name": "SignInButton",
@@ -275,7 +291,7 @@
       "_getDynamicPublicEnvVariables.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.5FPM4w76.css"
+      "_app/immutable/assets/_layout.pRDC1jI9.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -295,7 +311,7 @@
       "_state.svelte.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.BiIaMjBy.css"
+      "_app/immutable/assets/_page.Da3esMVp.css"
     ]
   },
   "src/routes/about/+page.svelte": {
@@ -316,6 +332,15 @@
     ],
     "css": [
       "_app/immutable/assets/_page.SHOQQNKc.css"
+    ]
+  },
+  "src/routes/ai-seo-api/+page.svelte": {
+    "file": "entries/pages/ai-seo-api/_page.svelte.js",
+    "name": "entries/pages/ai-seo-api/_page.svelte",
+    "src": "src/routes/ai-seo-api/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_SeoLandingPage.js"
     ]
   },
   "src/routes/api/account/+server.ts": {
@@ -532,6 +557,24 @@
       "_app/immutable/assets/_page.pKIlpJj4.css"
     ]
   },
+  "src/routes/meta-description-generator/+page.svelte": {
+    "file": "entries/pages/meta-description-generator/_page.svelte.js",
+    "name": "entries/pages/meta-description-generator/_page.svelte",
+    "src": "src/routes/meta-description-generator/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_SeoLandingPage.js"
+    ]
+  },
+  "src/routes/meta-title-generator/+page.svelte": {
+    "file": "entries/pages/meta-title-generator/_page.svelte.js",
+    "name": "entries/pages/meta-title-generator/_page.svelte",
+    "src": "src/routes/meta-title-generator/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_SeoLandingPage.js"
+    ]
+  },
   "src/routes/pricing/+page.svelte": {
     "file": "entries/pages/pricing/_page.svelte.js",
     "name": "entries/pages/pricing/_page.svelte",
@@ -551,5 +594,48 @@
     "css": [
       "_app/immutable/assets/_page.B2A99lQg.css"
     ]
+  },
+  "src/routes/robots.txt/+server.ts": {
+    "file": "entries/endpoints/robots.txt/_server.ts.js",
+    "name": "entries/endpoints/robots.txt/_server.ts",
+    "src": "src/routes/robots.txt/+server.ts",
+    "isEntry": true
+  },
+  "src/routes/search-intent-api/+page.svelte": {
+    "file": "entries/pages/search-intent-api/_page.svelte.js",
+    "name": "entries/pages/search-intent-api/_page.svelte",
+    "src": "src/routes/search-intent-api/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_SeoLandingPage.js"
+    ]
+  },
+  "src/routes/seo-metadata-api/+page.svelte": {
+    "file": "entries/pages/seo-metadata-api/_page.svelte.js",
+    "name": "entries/pages/seo-metadata-api/_page.svelte",
+    "src": "src/routes/seo-metadata-api/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_SeoLandingPage.js"
+    ]
+  },
+  "src/routes/seo-tools/+page.svelte": {
+    "file": "entries/pages/seo-tools/_page.svelte.js",
+    "name": "entries/pages/seo-tools/_page.svelte",
+    "src": "src/routes/seo-tools/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.l0E_68H7.css"
+    ]
+  },
+  "src/routes/sitemap.xml/+server.ts": {
+    "file": "entries/endpoints/sitemap.xml/_server.ts.js",
+    "name": "entries/endpoints/sitemap.xml/_server.ts",
+    "src": "src/routes/sitemap.xml/+server.ts",
+    "isEntry": true
   }
 }

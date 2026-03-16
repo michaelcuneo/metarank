@@ -120,7 +120,15 @@ function _page($$renderer, $$props) {
       },
       $$slots: { default: true }
     });
-    $$renderer2.push(`<!----></div></section></div>`);
+    $$renderer2.push(`<!----></div></section> <section class="seo-pages svelte-1uha8ag"><div class="seo-inner svelte-1uha8ag"><div class="seo-header svelte-1uha8ag"><h2 class="svelte-1uha8ag">SEO Tools for Developers</h2> <p class="svelte-1uha8ag">MetaRank helps developers and content platforms automate SEO metadata
+					generation with a simple API.</p> <a class="tools-link" href="/seo-tools">View all SEO tools</a> <p class="seo-intro svelte-1uha8ag">MetaRank provides developer-friendly SEO tools including a meta title generator,
+					meta description generator, and AI search intent classification API. 
+					These tools help automate SEO metadata generation for modern content workflows.</p></div> <div class="seo-grid svelte-1uha8ag"><a href="/meta-description-generator" class="seo-card svelte-1uha8ag"><h3 class="svelte-1uha8ag">Meta Description Generator</h3> <p class="svelte-1uha8ag">Generate search-friendly meta descriptions from page content using
+						the MetaRank API.</p></a> <a href="/meta-title-generator" class="seo-card svelte-1uha8ag"><h3 class="svelte-1uha8ag">Meta Title Generator</h3> <p class="svelte-1uha8ag">Create optimized meta titles automatically for articles,
+						landing pages, and CMS content.</p></a> <a href="/search-intent-api" class="seo-card svelte-1uha8ag"><h3 class="svelte-1uha8ag">Search Intent API</h3> <p class="svelte-1uha8ag">Classify content as informational, commercial, transactional,
+						or navigational using AI.</p></a> <a href="/seo-metadata-api" class="seo-card svelte-1uha8ag"><h3 class="svelte-1uha8ag">SEO Metadata API</h3> <p class="svelte-1uha8ag">Generate titles, descriptions, keywords, slugs, and intent in one
+						structured API response.</p></a> <a href="/ai-seo-api" class="seo-card svelte-1uha8ag"><h3 class="svelte-1uha8ag">AI SEO API</h3> <p class="svelte-1uha8ag">Automate SEO metadata generation for CMS platforms,
+						publishing tools, and developer workflows.</p></a></div></div></section></div>`);
   });
 }
 export {

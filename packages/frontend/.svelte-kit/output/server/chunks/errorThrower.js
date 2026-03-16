@@ -1,5 +1,5 @@
 import "clsx";
-import { n as ssr_context, g as getContext, o as setContext } from "./index2.js";
+import { ag as ssr_context, g as getContext, ad as setContext } from "./index2.js";
 import { buildErrorThrower } from "@clerk/shared/error";
 function onDestroy(fn) {
   /** @type {SSRContext} */

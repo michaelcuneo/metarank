@@ -27,13 +27,14 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/api" | "/api/account" | "/api/account/internal" | "/api/account/internal/sync" | "/api/billing" | "/api/generate" | "/api/keys" | "/api/keys/[keyId]" | "/api/status" | "/api/usage" | "/api/usage/history" | "/dashboard" | "/dashboard/api-keys" | "/dashboard/billing" | "/dashboard/generate" | "/dashboard/usage" | "/docs" | "/pricing";
+		RouteId(): "/" | "/about" | "/ai-seo-api" | "/api" | "/api/account" | "/api/account/internal" | "/api/account/internal/sync" | "/api/billing" | "/api/generate" | "/api/keys" | "/api/keys/[keyId]" | "/api/status" | "/api/usage" | "/api/usage/history" | "/dashboard" | "/dashboard/api-keys" | "/dashboard/billing" | "/dashboard/generate" | "/dashboard/usage" | "/docs" | "/meta-description-generator" | "/meta-title-generator" | "/pricing" | "/robots.txt" | "/search-intent-api" | "/seo-metadata-api" | "/seo-tools" | "/sitemap.xml";
 		RouteParams(): {
 			"/api/keys/[keyId]": { keyId: string }
 		};
 		LayoutParams(): {
 			"/": { keyId?: string };
 			"/about": Record<string, never>;
+			"/ai-seo-api": Record<string, never>;
 			"/api": { keyId?: string };
 			"/api/account": Record<string, never>;
 			"/api/account/internal": Record<string, never>;
@@ -51,10 +52,17 @@ declare module "$app/types" {
 			"/dashboard/generate": Record<string, never>;
 			"/dashboard/usage": Record<string, never>;
 			"/docs": Record<string, never>;
-			"/pricing": Record<string, never>
+			"/meta-description-generator": Record<string, never>;
+			"/meta-title-generator": Record<string, never>;
+			"/pricing": Record<string, never>;
+			"/robots.txt": Record<string, never>;
+			"/search-intent-api": Record<string, never>;
+			"/seo-metadata-api": Record<string, never>;
+			"/seo-tools": Record<string, never>;
+			"/sitemap.xml": Record<string, never>
 		};
-		Pathname(): "/" | "/about" | "/api/account" | "/api/account/internal/sync" | "/api/billing" | "/api/generate" | "/api/keys" | `/api/keys/${string}` & {} | "/api/status" | "/api/usage" | "/api/usage/history" | "/dashboard" | "/dashboard/api-keys" | "/dashboard/billing" | "/dashboard/generate" | "/dashboard/usage" | "/docs" | "/pricing";
+		Pathname(): "/" | "/about" | "/ai-seo-api" | "/api/account" | "/api/account/internal/sync" | "/api/billing" | "/api/generate" | "/api/keys" | `/api/keys/${string}` & {} | "/api/status" | "/api/usage" | "/api/usage/history" | "/dashboard" | "/dashboard/api-keys" | "/dashboard/billing" | "/dashboard/generate" | "/dashboard/usage" | "/docs" | "/meta-description-generator" | "/meta-title-generator" | "/pricing" | "/robots.txt" | "/search-intent-api" | "/seo-metadata-api" | "/seo-tools" | "/sitemap.xml";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/apple-touch-icon.png" | "/favicon-96x96.png" | "/favicon.ico" | "/favicon.svg" | "/site.webmanifest" | "/web-app-manifest-192x192.png" | "/web-app-manifest-512x512.png" | string & {};
+		Asset(): "/apple-touch-icon.png" | "/favicon-96x96.png" | "/favicon.ico" | "/favicon.svg" | "/metarank.png" | "/site.webmanifest" | "/web-app-manifest-192x192.png" | "/web-app-manifest-512x512.png" | string & {};
 	}
 }

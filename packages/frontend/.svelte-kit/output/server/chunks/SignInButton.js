@@ -1,4 +1,4 @@
-import { h as attr_style, a as attr_class, m as clsx } from "./index2.js";
+import { h as attr_style, a as attr_class, ai as clsx } from "./index2.js";
 import { u as useClerkContext } from "./errorThrower.js";
 function SignInButton($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {

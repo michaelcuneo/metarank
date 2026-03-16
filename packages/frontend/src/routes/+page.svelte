@@ -93,6 +93,68 @@
 			</Button>
 		</div>
 	</section>
+
+	<section class="seo-pages">
+		<div class="seo-inner">
+			<div class="seo-header">
+				<h2>SEO Tools for Developers</h2>
+				<p>
+					MetaRank helps developers and content platforms automate SEO metadata
+					generation with a simple API.
+				</p>
+
+				<a class="tools-link" href="/seo-tools">View all SEO tools</a>
+
+				<p class="seo-intro">
+					MetaRank provides developer-friendly SEO tools including a meta title generator,
+					meta description generator, and AI search intent classification API. 
+					These tools help automate SEO metadata generation for modern content workflows.
+				</p>
+			</div>
+
+			<div class="seo-grid">
+				<a href="/meta-description-generator" class="seo-card">
+					<h3>Meta Description Generator</h3>
+					<p>
+						Generate search-friendly meta descriptions from page content using
+						the MetaRank API.
+					</p>
+				</a>
+
+				<a href="/meta-title-generator" class="seo-card">
+					<h3>Meta Title Generator</h3>
+					<p>
+						Create optimized meta titles automatically for articles,
+						landing pages, and CMS content.
+					</p>
+				</a>
+
+				<a href="/search-intent-api" class="seo-card">
+					<h3>Search Intent API</h3>
+					<p>
+						Classify content as informational, commercial, transactional,
+						or navigational using AI.
+					</p>
+				</a>
+
+				<a href="/seo-metadata-api" class="seo-card">
+					<h3>SEO Metadata API</h3>
+					<p>
+						Generate titles, descriptions, keywords, slugs, and intent in one
+						structured API response.
+					</p>
+				</a>
+
+				<a href="/ai-seo-api" class="seo-card">
+					<h3>AI SEO API</h3>
+					<p>
+						Automate SEO metadata generation for CMS platforms,
+						publishing tools, and developer workflows.
+					</p>
+				</a>
+			</div>
+		</div>
+	</section>
 </div>
 
 <style>
@@ -193,6 +255,7 @@
 	.cta {
 		text-align: center;
 		padding-top: 3rem;
+		padding-bottom: 3rem;
 		border-top: 1px solid var(--color-border);
 	}
 
@@ -216,6 +279,74 @@
 		justify-content: center;
 		gap: 0.9rem;
 		flex-wrap: wrap;
+	}
+
+	.seo-pages {
+		padding: 4rem 2rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.seo-inner {
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	.seo-header {
+		margin-bottom: 2rem;
+		max-width: 60ch;
+	}
+
+	.seo-header h2 {
+		font-size: 1.6rem;
+		letter-spacing: -0.02em;
+		margin: 0;
+	}
+
+	.seo-header p {
+		margin: 0.7rem 0 0;
+		color: var(--color-text-muted);
+		line-height: 1.6;
+	}
+
+	.seo-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.seo-card {
+		display: block;
+		padding: 1.25rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--color-border);
+		background: var(--color-surface);
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.15s ease;
+	}
+
+	.seo-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--primary-bg);
+	}
+
+	.seo-card h3 {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	.seo-card p {
+		margin: 0.5rem 0 0;
+		font-size: 0.88rem;
+		line-height: 1.6;
+		color: var(--color-text-muted);
+	}
+
+	@media (max-width: 900px) {
+		.seo-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	@media (max-width: 768px) {

@@ -2,16 +2,93 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/png" href="%sveltekit.assets%/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
-		<link rel="shortcut icon" href="%sveltekit.assets%/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Metarank" />
-		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
-
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#2b6fff" />
+		<meta name="color-scheme" content="light dark" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<!-- SEO -->
+		<meta
+			name="description"
+			content="MetaRank generates SEO titles, meta descriptions, keywords, and search intent using AI. Fast API for developers, CMSs, and content platforms."
+		/>
+		<meta
+			name="keywords"
+			content="SEO metadata API, meta description API, meta title generator API, AI SEO automation, search intent classification API, SEO tools for developers, content optimization API"
+		/>
+		<link rel="canonical" href="https://metarank.dev/" />
+
+		<!-- 🪞 Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://metarank.dev/" />
+		<meta property="og:title" content="MetaRank — AI SEO Metadata API" />
+		<meta
+			property="og:description"
+			content="Generate SEO titles, meta descriptions, keywords and search intent instantly. Built for developers and modern content platforms."
+		/>
+		<meta property="og:image" content="%sveltekit.assets%/metarank.png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:site_name" content="MetaRank" />
+
+		<!-- 🐦 Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@metarankdev" />
+		<meta name="twitter:title" content="MetaRank — AI SEO Metadata API" />
+		<meta
+			name="twitter:description"
+			content="Generate SEO titles, meta descriptions, keywords and search intent instantly via API."
+		/>
+		<meta name="twitter:image" content="%sveltekit.assets%/metarank.png" />
+
+		<!-- PWA & Favicons -->
+		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
+		<link rel="icon" type="image/png" href="%sveltekit.assets%/favicon-96x96.png" sizes="96x96" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-title" content="MetaRank" />
+		<meta name="application-name" content="MetaRank" />
+
+		<!-- ⚡️ Performance & Prefetch -->
+		<link rel="dns-prefetch" href="https://api.metarank.dev" />
+		<link rel="preconnect" href="https://api.metarank.dev" crossorigin />
+
+		<!-- 🔐 Privacy & Accessibility -->
+		<meta name="robots" content="index, follow" />
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="msapplication-TileColor" content="#408CFF" />
+		<meta name="generator" content="MetaRank Platform v1.0" />
+
+		<!-- 🧩 Structured Data (JSON-LD Schema.org) -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "SoftwareApplication",
+				"name": "MetaRank",
+				"url": "https://metarank.dev",
+				"applicationCategory": "DeveloperApplication, SEO Tool",
+				"operatingSystem": "Any",
+				"description": "AI-powered API that generates SEO titles, meta descriptions, keywords and search intent classification for websites and content platforms.",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD"
+				},
+				"publisher": {
+					"@type": "Organization",
+					"name": "MetaRank",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://metarank.dev/og/metarank-logo.png"
+					}
+				}
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
+
 	<body data-sveltekit-preload-data="hover">
 		<div>%sveltekit.body%</div>
 	</body>

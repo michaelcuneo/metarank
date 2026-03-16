@@ -22,14 +22,23 @@
 			<div class="footer-group">
 				<div class="footer-title">Developers</div>
 				<a href="/docs">Docs</a>
-				<a href="https://github.com/your-org/metarank" target="_blank" rel="noopener">
-					GitHub
+				<a href="https://discord.gg/fFjVcPwJFk" target="_blank" rel="noopener">
+					Discord
 				</a>
 			</div>
 
 			<div class="footer-group">
+				<div class="footer-title">SEO</div>
+				<a href="/meta-description-generator">Meta Description Generator</a>
+				<a href="/meta-title-generator">Meta Title Generator</a>
+				<a href="/search-intent-api">Search Intent API</a>
+				<a href="/seo-metadata-api">SEO Metadata API</a>
+				<a href="/ai-seo-api">AI SEO API</a>
+			</div>
+
+			<div class="footer-group">
 				<div class="footer-title">Company</div>
-				<a href="mailto:hello@metarank.io">Contact</a>
+				<a href="mailto:me@michaelcuneo.com.au">Contact</a>
 			</div>
 
 			<div class="footer-group">
@@ -78,7 +87,7 @@
 
 .footer-nav {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(120px, 1fr));
+	grid-template-columns: repeat(5, minmax(120px, 1fr));
 	gap: 2rem;
 }
 

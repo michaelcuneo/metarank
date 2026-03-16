@@ -26,4 +26,36 @@ interface UsageContext {
 	source: 'ui' | 'api';
 }
 
+type SeoLandingPageContent = {
+	slug: string;
+	title: string;
+	metaTitle: string;
+	metaDescription: string;
+	eyebrow: string;
+	heroTitle: string;
+	heroDescription: string;
+	primaryCta: {
+		label: string;
+		href: string;
+	};
+	secondaryCta: {
+		label: string;
+		href: string;
+	};
+	benefits: string[];
+	useCases: {
+		title: string;
+		description: string;
+	}[];
+	codeExample: {
+		title: string;
+		language: 'bash' | 'javascript';
+		code: string;
+	};
+	faqs: {
+		question: string;
+		answer: string;
+	}[];
+};
+
 async function generateSeoMeta(post: PostInput, usage?: UsageContext): Promise<SeoMetaResponseV1>;

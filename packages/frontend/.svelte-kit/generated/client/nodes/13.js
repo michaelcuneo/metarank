@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/signin/sso-callback/+page.svelte";
+export { default as component } from "../../../../src/routes/meta-title-generator/+page.svelte";

@@ -12,7 +12,13 @@ export const nodes = [
 	() => import('./nodes/8'),
 	() => import('./nodes/9'),
 	() => import('./nodes/10'),
-	() => import('./nodes/11')
+	() => import('./nodes/11'),
+	() => import('./nodes/12'),
+	() => import('./nodes/13'),
+	() => import('./nodes/14'),
+	() => import('./nodes/15'),
+	() => import('./nodes/16'),
+	() => import('./nodes/17')
 ];
 
 export const server_loads = [0,2];
@@ -20,13 +26,19 @@ export const server_loads = [0,2];
 export const dictionary = {
 		"/": [3],
 		"/about": [4],
-		"/dashboard": [~5,[2]],
-		"/dashboard/api-keys": [~6,[2]],
-		"/dashboard/billing": [~7,[2]],
-		"/dashboard/generate": [~8,[2]],
-		"/dashboard/usage": [~9,[2]],
-		"/docs": [10],
-		"/pricing": [11]
+		"/ai-seo-api": [5],
+		"/dashboard": [~6,[2]],
+		"/dashboard/api-keys": [~7,[2]],
+		"/dashboard/billing": [~8,[2]],
+		"/dashboard/generate": [~9,[2]],
+		"/dashboard/usage": [~10,[2]],
+		"/docs": [11],
+		"/meta-description-generator": [12],
+		"/meta-title-generator": [13],
+		"/pricing": [14],
+		"/search-intent-api": [15],
+		"/seo-metadata-api": [16],
+		"/seo-tools": [17]
 	};
 
 export const hooks = {
