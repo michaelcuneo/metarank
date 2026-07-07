@@ -6,8 +6,10 @@ function getCurrentPeriod(): string {
 	return new Date().toISOString().slice(0, 7);
 }
 
-export function getPlanLimit(plan: string): number {
+export function getPlanLimit(plan: string): number | null {
 	switch (plan) {
+		case 'unlimited':
+			return null;
 		case 'team':
 			return 25000;
 		case 'pro':
@@ -15,6 +17,22 @@ export function getPlanLimit(plan: string): number {
 		default:
 			return 25;
 	}
+}
+
+export function resolveRequestsLimit(plan: string, billingLimit?: number | null): number | null {
+	if (billingLimit === null) {
+		return null;
+	}
+
+	if (typeof billingLimit === 'number' && Number.isFinite(billingLimit) && billingLimit >= 0) {
+		return billingLimit;
+	}
+
+	return getPlanLimit(plan);
+}
+
+export function hasReachedUsageLimit(requestCount: number, requestsLimit: number | null): boolean {
+	return requestsLimit !== null && requestCount >= requestsLimit;
 }
 
 export async function getBilling(userId: string) {

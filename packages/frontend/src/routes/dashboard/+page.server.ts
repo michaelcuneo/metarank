@@ -6,10 +6,11 @@ type AccountResponse = {
 	firstName: string | null;
 	lastName: string | null;
 	imageUrl: string | null;
-	plan: 'free_user' | 'pro' | 'team';
+	plan: 'free_user' | 'pro' | 'team' | 'unlimited';
 	status: 'active' | 'suspended';
 	requestsUsed: number;
-	requestsLimit: number;
+	requestsLimit: number | null;
+	usageType: 'metered' | 'unlimited';
 	createdAt: number;
 	updatedAt: number;
 };
@@ -17,8 +18,9 @@ type AccountResponse = {
 type UsageResponse = {
 	period: string;
 	requestsUsed: number;
-	requestsLimit: number;
-	plan: 'free_user' | 'pro' | 'team';
+	requestsLimit: number | null;
+	plan: 'free_user' | 'pro' | 'team' | 'unlimited';
+	usageType: 'metered' | 'unlimited';
 };
 
 type KeysResponse = {
@@ -33,7 +35,7 @@ type KeysResponse = {
 
 type BillingResponse = {
 	userId: string;
-	plan: 'free_user' | 'pro' | 'team';
+	plan: 'free_user' | 'pro' | 'team' | 'unlimited';
 	status: string;
 	requestsLimit: number | null;
 	stripeCustomerId: string | null;

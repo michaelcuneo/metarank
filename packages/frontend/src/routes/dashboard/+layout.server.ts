@@ -4,8 +4,9 @@ import type { LayoutServerLoad } from './$types.js';
 type UsageResponse = {
 	period: string;
 	requestsUsed: number;
-	requestsLimit: number;
-	plan: 'free_user' | 'pro' | 'team';
+	requestsLimit: number | null;
+	plan: 'free_user' | 'pro' | 'team' | 'unlimited';
+	usageType: 'metered' | 'unlimited';
 };
 
 export const load: LayoutServerLoad = async ({ locals, fetch }) => {

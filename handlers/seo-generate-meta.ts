@@ -3,7 +3,13 @@ import { getCachedSeoMeta, setCachedSeoMeta } from './_shared/cache';
 import { createSeoCacheKey } from './_shared/cacheKey';
 import { acquireSeoLock, releaseSeoLock } from './_shared/lock';
 import { waitForCachedSeoMeta } from './_shared/waitForCache';
-import { getBilling, getCurrentUsage, getPlanLimit, incrementUsage } from './_shared/usage';
+import {
+	getBilling,
+	getCurrentUsage,
+	hasReachedUsageLimit,
+	incrementUsage,
+	resolveRequestsLimit
+} from './_shared/usage';
 import {
 	ok,
 	badRequest,
@@ -65,11 +71,11 @@ export async function handler(event: any) {
 		}
 
 		const billing = await getBilling(user.userId);
-		const plan = billing?.plan ?? user.plan ?? 'free_user';
+		const plan = user.plan === 'unlimited' ? 'unlimited' : billing?.plan ?? user.plan ?? 'free_user';
 		const usage = await getCurrentUsage(user.userId);
-		const requestsLimit = billing?.requestsLimit ?? getPlanLimit(plan);
+		const requestsLimit = resolveRequestsLimit(plan, billing?.requestsLimit);
 
-		if (usage.requestCount >= requestsLimit) {
+		if (hasReachedUsageLimit(usage.requestCount, requestsLimit)) {
 			return tooManyRequests('Monthly usage limit reached');
 		}
 

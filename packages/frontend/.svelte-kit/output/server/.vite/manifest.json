@@ -214,10 +214,6 @@
       "src/hooks.server.ts"
     ]
   },
-  "_public.js": {
-    "file": "chunks/public.js",
-    "name": "public"
-  },
   "_root.js": {
     "file": "chunks/root.js",
     "name": "root",
@@ -257,8 +253,7 @@
     "isDynamicEntry": true,
     "imports": [
       "_clerkClient.js",
-      "_getDynamicPublicEnvVariables.js",
-      "_public.js"
+      "_getDynamicPublicEnvVariables.js"
     ]
   },
   "src/routes/+layout.server.ts": {
@@ -276,7 +271,7 @@
     "src": "src/routes/+layout.svelte",
     "isEntry": true,
     "imports": [
-      "_public.js",
+      "_shared-server.js",
       "_index2.js",
       "_index3.js",
       "_Button.js",

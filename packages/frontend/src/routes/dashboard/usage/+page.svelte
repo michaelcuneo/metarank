@@ -8,8 +8,9 @@
 			usage: {
 				period: string;
 				requestsUsed: number;
-				requestsLimit: number;
-				plan: 'free_user' | 'pro' | 'team';
+				requestsLimit: number | null;
+				plan: 'free_user' | 'pro' | 'team' | 'unlimited';
+				usageType: 'metered' | 'unlimited';
 			};
 			history: {
 				period: string;
@@ -20,6 +21,8 @@
 
 	function formatPlan(plan: string) {
 		switch (plan) {
+			case 'unlimited':
+				return 'Unlimited';
 			case 'free_user':
 				return 'Free';
 			case 'pro':
@@ -42,16 +45,22 @@
 	}
 
 	const usagePercent = $derived(
-		Math.min(
-			100,
-			Math.round(
-				(data.usage.requestsUsed / Math.max(data.usage.requestsLimit, 1)) * 100
-			)
-		)
+		data.usage.usageType === 'unlimited'
+			? 100
+			: Math.min(
+					100,
+					Math.round(
+						(data.usage.requestsUsed / Math.max(data.usage.requestsLimit ?? 1, 1)) * 100
+					)
+				)
+	);
+
+	const limitLabel = $derived(
+		data.usage.usageType === 'unlimited' ? 'Unlimited' : String(data.usage.requestsLimit)
 	);
 
 	const maxUsage = $derived(
-		Math.max(...data.history.map((m: { peroid: string, requestCount: string }) => m), 1)
+		Math.max(...data.history.map((m: { period: string; requestCount: number }) => m.requestCount), 1)
 	);
 </script>
 
@@ -78,7 +87,7 @@
 
 	<Card>
 		<p class="label">Monthly limit</p>
-		<p class="value">{data.usage.requestsLimit}</p>
+		<p class="value">{limitLabel}</p>
 	</Card>
 
 	<Card>
@@ -102,7 +111,7 @@
 
 		<div class="meta">
 			<span>{data.usage.requestsUsed} used</span>
-			<span>{data.usage.requestsLimit} limit</span>
+			<span>{limitLabel} limit</span>
 		</div>
 	</div>
 

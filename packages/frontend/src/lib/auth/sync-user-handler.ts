@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import crypto from 'node:crypto';
 import { clerkClient } from 'svelte-clerk/server';
 
-type Plan = 'free_user' | 'pro' | 'team';
+type Plan = 'free_user' | 'pro' | 'team' | 'unlimited';
 
 type SyncedAccount = {
 	userId: string;
@@ -10,13 +10,24 @@ type SyncedAccount = {
 	updatedAt: number;
 };
 
+type AuthLike = {
+	userId?: string | null;
+	has?: (params: { plan: string }) => boolean;
+};
+
+const UNLIMITED_OWNER_USER_ID = process.env.METARANK_UNLIMITED_USER_ID?.trim();
+
 function hash(data: object) {
 	return crypto.createHash('sha256').update(JSON.stringify(data)).digest('base64url');
 }
 
-function getPlanForUser(auth: ClerkAuthObject | null): Plan {
-	if (auth?.has({ plan: 'team' })) return 'team';
-	if (auth?.has({ plan: 'pro' })) return 'pro';
+function getPlanForUser(auth: AuthLike | null): Plan {
+	if (UNLIMITED_OWNER_USER_ID && auth?.userId === UNLIMITED_OWNER_USER_ID) {
+		return 'unlimited';
+	}
+
+	if (auth?.has?.({ plan: 'team' })) return 'team';
+	if (auth?.has?.({ plan: 'pro' })) return 'pro';
 	return 'free_user';
 }
 

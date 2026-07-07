@@ -10,8 +10,6 @@ import { isHttpOrHttps } from "@clerk/shared/proxy";
 import { isDevelopmentFromSecretKey } from "@clerk/shared/keys";
 import { g as getDynamicPublicEnvVariables } from "../chunks/getDynamicPublicEnvVariables.js";
 import { isTruthy } from "@clerk/shared/underscore";
-import { Resource } from "sst";
-import { a as PUBLIC_CLERK_PUBLISHABLE_KEY_PROD, b as PUBLIC_CLERK_PUBLISHABLE_KEY_DEV } from "../chunks/public.js";
 import crypto from "node:crypto";
 function patchRequest(request) {
   const clonedRequest = new Request(request.url, {
@@ -139,16 +137,20 @@ Check if signInUrl is missing from your configuration or if it is not an absolut
 2) With environment variables e.g.
    PUBLIC_CLERK_SIGN_IN_URL='SOME_URL'
    PUBLIC_CLERK_IS_SATELLITE='true'`;
-const key = Resource.App.stage === "production" ? PUBLIC_CLERK_PUBLISHABLE_KEY_PROD : PUBLIC_CLERK_PUBLISHABLE_KEY_DEV;
+const key = process.env["PUBLIC_CLERK_PUBLISHABLE_KEY"] ?? "";
 const clerkHandle = withClerkHandler({
   publishableKey: key
 });
+const UNLIMITED_OWNER_USER_ID = process.env.METARANK_UNLIMITED_USER_ID?.trim();
 function hash(data) {
   return crypto.createHash("sha256").update(JSON.stringify(data)).digest("base64url");
 }
 function getPlanForUser(auth) {
-  if (auth?.has({ plan: "team" })) return "team";
-  if (auth?.has({ plan: "pro" })) return "pro";
+  if (UNLIMITED_OWNER_USER_ID && auth?.userId === UNLIMITED_OWNER_USER_ID) {
+    return "unlimited";
+  }
+  if (auth?.has?.({ plan: "team" })) return "team";
+  if (auth?.has?.({ plan: "pro" })) return "pro";
   return "free_user";
 }
 const WEEK = 7 * 24 * 60 * 60 * 1e3;

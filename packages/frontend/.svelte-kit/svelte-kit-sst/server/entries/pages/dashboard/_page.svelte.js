@@ -7,6 +7,8 @@ function _page($$renderer, $$props) {
     let { data } = $$props;
     function formatPlan(plan) {
       switch (plan) {
+        case "unlimited":
+          return "Unlimited";
         case "free_user":
           return "Free";
         case "pro":
@@ -20,6 +22,9 @@ function _page($$renderer, $$props) {
     function formatBillingStatus(billing) {
       if (billing.plan === "free_user") {
         return "No active subscription";
+      }
+      if (billing.plan === "unlimited") {
+        return "Unlimited access";
       }
       if (billing.status) {
         return billing.status;
@@ -41,7 +46,10 @@ function _page($$renderer, $$props) {
     const billingStatus = derived(() => formatBillingStatus(data.billing));
     const requestsUsed = derived(() => data.usage.requestsUsed);
     const requestsLimit = derived(() => data.usage.requestsLimit);
-    const usagePercent = derived(() => Math.min(100, Math.round(requestsUsed() / Math.max(requestsLimit(), 1) * 100)));
+    const hasUnlimitedUsage = derived(() => data.usage.usageType === "unlimited");
+    const limitLabel = derived(() => hasUnlimitedUsage() ? "Unlimited" : String(requestsLimit()));
+    const usagePercent = derived(() => hasUnlimitedUsage() ? 100 : Math.min(100, Math.round(requestsUsed() / Math.max(requestsLimit() ?? 1, 1) * 100)));
+    const usageMetaText = derived(() => hasUnlimitedUsage() ? "Unlimited monthly usage" : `${usagePercent()}% of monthly allowance used`);
     const activeKeys = derived(() => data.keys.filter((key) => !key.revoked));
     const recentKeys = derived(() => data.keys.slice(0, 5));
     const nextReset = derived(() => getNextResetLabel(data.usage.period));
@@ -95,7 +103,7 @@ function _page($$renderer, $$props) {
     $$renderer2.push(`<!----> `);
     Card($$renderer2, {
       children: ($$renderer3) => {
-        $$renderer3.push(`<p class="stat-label svelte-x1i5gj">Monthly usage</p> <p class="stat-value svelte-x1i5gj">${escape_html(requestsUsed())} / ${escape_html(requestsLimit())}</p> <p class="stat-meta svelte-x1i5gj">${escape_html(usagePercent())}% of monthly allowance used</p>`);
+        $$renderer3.push(`<p class="stat-label svelte-x1i5gj">Monthly usage</p> <p class="stat-value svelte-x1i5gj">${escape_html(requestsUsed())} / ${escape_html(limitLabel())}</p> <p class="stat-meta svelte-x1i5gj">${escape_html(usageMetaText())}</p>`);
       },
       $$slots: { default: true }
     });
@@ -139,7 +147,7 @@ function _page($$renderer, $$props) {
           },
           $$slots: { default: true }
         });
-        $$renderer3.push(`<!----></div> <div class="usage-progress svelte-x1i5gj"><div class="usage-progress-bar svelte-x1i5gj"><div class="usage-progress-fill svelte-x1i5gj"${attr_style(`width: ${usagePercent()}%`)}></div></div> <div class="usage-progress-meta svelte-x1i5gj"><span>${escape_html(requestsUsed())} used</span> <span>${escape_html(requestsLimit())} limit</span></div></div> <div class="usage-chart svelte-x1i5gj" aria-label="Usage history"><!--[-->`);
+        $$renderer3.push(`<!----></div> <div class="usage-progress svelte-x1i5gj"><div class="usage-progress-bar svelte-x1i5gj"><div class="usage-progress-fill svelte-x1i5gj"${attr_style(`width: ${usagePercent()}%`)}></div></div> <div class="usage-progress-meta svelte-x1i5gj"><span>${escape_html(requestsUsed())} used</span> <span>${escape_html(limitLabel())} limit</span></div></div> <div class="usage-chart svelte-x1i5gj" aria-label="Usage history"><!--[-->`);
         const each_array = ensure_array_like(usageHistory());
         for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
           let item = each_array[$$index];
@@ -201,7 +209,7 @@ function _page($$renderer, $$props) {
           },
           $$slots: { default: true }
         });
-        $$renderer3.push(`<!----></div> <div class="billing-summary svelte-x1i5gj"><div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Plan</span> <span class="billing-value svelte-x1i5gj">${escape_html(planName())}</span></div> <div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Status</span> <span class="billing-value svelte-x1i5gj">${escape_html(billingStatus())}</span></div> <div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Included requests</span> <span class="billing-value svelte-x1i5gj">${escape_html(requestsLimit())} / month</span></div></div> <div class="billing-actions svelte-x1i5gj">`);
+        $$renderer3.push(`<!----></div> <div class="billing-summary svelte-x1i5gj"><div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Plan</span> <span class="billing-value svelte-x1i5gj">${escape_html(planName())}</span></div> <div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Status</span> <span class="billing-value svelte-x1i5gj">${escape_html(billingStatus())}</span></div> <div class="billing-row svelte-x1i5gj"><span class="billing-label svelte-x1i5gj">Included requests</span> <span class="billing-value svelte-x1i5gj">${escape_html(limitLabel())} / month</span></div></div> <div class="billing-actions svelte-x1i5gj">`);
         Button($$renderer3, {
           as: "a",
           href: "/pricing",

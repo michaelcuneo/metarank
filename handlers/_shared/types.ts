@@ -1,4 +1,4 @@
-export type Plan = 'free_user' | 'pro' | 'team';
+export type Plan = 'free_user' | 'pro' | 'team' | 'unlimited';
 
 export type UserRecord = {
 	userId: string;
@@ -16,7 +16,7 @@ export type UserRecord = {
 export type BillingRecord = {
 	userId: string;
 	plan?: Plan;
-	requestsLimit?: number;
+	requestsLimit?: number | null;
 	stripeCustomerId?: string | null;
 	stripeSubscriptionId?: string | null;
 	status?: string;

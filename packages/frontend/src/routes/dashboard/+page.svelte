@@ -9,10 +9,11 @@
 		firstName: string | null;
 		lastName: string | null;
 		imageUrl: string | null;
-		plan: 'free_user' | 'pro' | 'team';
+		plan: 'free_user' | 'pro' | 'team' | 'unlimited';
 		status: 'active' | 'suspended';
 		requestsUsed: number;
-		requestsLimit: number;
+		requestsLimit: number | null;
+		usageType: 'metered' | 'unlimited';
 		createdAt: number;
 		updatedAt: number;
 	};
@@ -20,8 +21,9 @@
 	type Usage = {
 		period: string;
 		requestsUsed: number;
-		requestsLimit: number;
-		plan: 'free_user' | 'pro' | 'team';
+		requestsLimit: number | null;
+		plan: 'free_user' | 'pro' | 'team' | 'unlimited';
+		usageType: 'metered' | 'unlimited';
 	};
 
 	type ApiKey = {
@@ -34,7 +36,7 @@
 
 	type Billing = {
 		userId: string;
-		plan: 'free_user' | 'pro' | 'team';
+		plan: 'free_user' | 'pro' | 'team' | 'unlimited';
 		status: string;
 		requestsLimit: number | null;
 		stripeCustomerId: string | null;
@@ -52,6 +54,8 @@
 
 	function formatPlan(plan: string): string {
 		switch (plan) {
+			case 'unlimited':
+				return 'Unlimited';
 			case 'free_user':
 				return 'Free';
 			case 'pro':
@@ -66,6 +70,10 @@
 	function formatBillingStatus(billing: Billing): string {
 		if (billing.plan === 'free_user') {
 			return 'No active subscription';
+		}
+
+		if (billing.plan === 'unlimited') {
+			return 'Unlimited access';
 		}
 
 		if (billing.status) {
@@ -102,8 +110,17 @@
 	const billingStatus = $derived(formatBillingStatus(data.billing));
 	const requestsUsed = $derived(data.usage.requestsUsed);
 	const requestsLimit = $derived(data.usage.requestsLimit);
+	const hasUnlimitedUsage = $derived(data.usage.usageType === 'unlimited');
+	const limitLabel = $derived(hasUnlimitedUsage ? 'Unlimited' : String(requestsLimit));
 	const usagePercent = $derived(
-		Math.min(100, Math.round((requestsUsed / Math.max(requestsLimit, 1)) * 100))
+		hasUnlimitedUsage
+			? 100
+			: Math.min(100, Math.round((requestsUsed / Math.max(requestsLimit ?? 1, 1)) * 100))
+	);
+	const usageMetaText = $derived(
+		hasUnlimitedUsage
+			? 'Unlimited monthly usage'
+			: `${usagePercent}% of monthly allowance used`
 	);
 	const activeKeys = $derived(data.keys.filter((key: ApiKey) => !key.revoked));
 	const recentKeys = $derived(data.keys.slice(0, 5));
@@ -153,8 +170,8 @@
 
 		<Card>
 			<p class="stat-label">Monthly usage</p>
-			<p class="stat-value">{requestsUsed} / {requestsLimit}</p>
-			<p class="stat-meta">{usagePercent}% of monthly allowance used</p>
+			<p class="stat-value">{requestsUsed} / {limitLabel}</p>
+			<p class="stat-meta">{usageMetaText}</p>
 		</Card>
 
 		<Card>
@@ -198,7 +215,7 @@
 				</div>
 				<div class="usage-progress-meta">
 					<span>{requestsUsed} used</span>
-					<span>{requestsLimit} limit</span>
+					<span>{limitLabel} limit</span>
 				</div>
 			</div>
 
@@ -330,7 +347,7 @@
 				</div>
 				<div class="billing-row">
 					<span class="billing-label">Included requests</span>
-					<span class="billing-value">{requestsLimit} / month</span>
+					<span class="billing-value">{limitLabel} / month</span>
 				</div>
 			</div>
 

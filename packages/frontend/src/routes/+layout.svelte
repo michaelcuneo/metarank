@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import './app.css';
 
-	import { PUBLIC_CLERK_PUBLISHABLE_KEY } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -13,10 +13,12 @@
 	import '@fortawesome/fontawesome-svg-core/styles.css';
 	config.autoAddCss = false;
 
+	const publishableKey = env.PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
+
 	let { children }: { children: Snippet } = $props();
 </script>
 
-<ClerkProvider publishableKey={PUBLIC_CLERK_PUBLISHABLE_KEY}>
+<ClerkProvider publishableKey={publishableKey}>
 	<div class="app-shell">
 		<Header />
 		<main>

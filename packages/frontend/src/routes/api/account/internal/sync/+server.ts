@@ -5,6 +5,22 @@ import { DynamoDBDocumentClient, PutCommand, GetCommand } from '@aws-sdk/lib-dyn
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
+type Plan = 'free_user' | 'pro' | 'team' | 'unlimited';
+
+const UNLIMITED_OWNER_USER_ID = process.env.METARANK_UNLIMITED_USER_ID?.trim();
+
+function resolvePlan(userId: string, requestedPlan: unknown): Plan {
+	if (UNLIMITED_OWNER_USER_ID && userId === UNLIMITED_OWNER_USER_ID) {
+		return 'unlimited';
+	}
+
+	if (requestedPlan === 'team' || requestedPlan === 'pro') {
+		return requestedPlan;
+	}
+
+	return 'free_user';
+}
+
 export async function POST({ request }) {
 	const body = await request.json();
 
@@ -23,7 +39,7 @@ export async function POST({ request }) {
 		firstName: body.firstName,
 		lastName: body.lastName,
 		imageUrl: body.imageUrl,
-		plan: body.plan ?? 'free_user',
+		plan: resolvePlan(String(body.userId), body.plan),
 		createdAt: existing.Item?.createdAt ?? now,
 		updatedAt: now,
 		lastActiveAt: body.lastActiveAt ?? now

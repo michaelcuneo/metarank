@@ -1,12 +1,16 @@
 import crypto from 'node:crypto';
 import { clerkClient } from 'svelte-clerk/server';
+const UNLIMITED_OWNER_USER_ID = process.env.METARANK_UNLIMITED_USER_ID?.trim();
 function hash(data) {
     return crypto.createHash('sha256').update(JSON.stringify(data)).digest('base64url');
 }
 function getPlanForUser(auth) {
-    if (auth?.has({ plan: 'team' }))
+    if (UNLIMITED_OWNER_USER_ID && auth?.userId === UNLIMITED_OWNER_USER_ID) {
+        return 'unlimited';
+    }
+    if (auth?.has?.({ plan: 'team' }))
         return 'team';
-    if (auth?.has({ plan: 'pro' }))
+    if (auth?.has?.({ plan: 'pro' }))
         return 'pro';
     return 'free_user';
 }

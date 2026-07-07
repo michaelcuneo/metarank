@@ -5,8 +5,9 @@
 	type Usage = {
 		period: string;
 		requestsUsed: number;
-		requestsLimit: number;
-		plan: 'free_user' | 'pro' | 'team';
+		requestsLimit: number | null;
+		plan: 'free_user' | 'pro' | 'team' | 'unlimited';
+		usageType: 'metered' | 'unlimited';
 	};
 
 	let { data, children } = $props<{
@@ -44,6 +45,8 @@
 
 	function formatPlan(plan: Usage['plan']) {
 		switch (plan) {
+			case 'unlimited':
+				return 'Unlimited';
 			case 'pro':
 				return 'Pro';
 			case 'team':
@@ -53,11 +56,21 @@
 		}
 	}
 
+	const hasUnlimitedUsage = $derived(data.usage.usageType === 'unlimited');
+
 	const usagePercent = $derived(
-		Math.min(
-			100,
-			Math.round((data.usage.requestsUsed / Math.max(data.usage.requestsLimit, 1)) * 100)
-		)
+		hasUnlimitedUsage
+			? 100
+			: Math.min(
+					100,
+					Math.round((data.usage.requestsUsed / Math.max(data.usage.requestsLimit ?? 1, 1)) * 100)
+				)
+	);
+
+	const usageMeta = $derived(
+		hasUnlimitedUsage
+			? `${data.usage.requestsUsed} requests this month (unlimited)`
+			: `${data.usage.requestsUsed} / ${data.usage.requestsLimit} requests`
 	);
 </script>
 
@@ -92,7 +105,7 @@
 				</div>
 
 				<p class="usage-meta">
-					{data.usage.requestsUsed} / {data.usage.requestsLimit} requests
+					{usageMeta}
 				</p>
 			</div>
 

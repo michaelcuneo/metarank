@@ -6,6 +6,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "CLERK_SECRET_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "METARANK_UNLIMITED_USER_ID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "MetarankAPI": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string

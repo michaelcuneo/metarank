@@ -54,6 +54,8 @@ function _layout($$renderer, $$props) {
     }
     function formatPlan(plan) {
       switch (plan) {
+        case "unlimited":
+          return "Unlimited";
         case "pro":
           return "Pro";
         case "team":
@@ -62,7 +64,9 @@ function _layout($$renderer, $$props) {
           return "Free";
       }
     }
-    const usagePercent = derived(() => Math.min(100, Math.round(data.usage.requestsUsed / Math.max(data.usage.requestsLimit, 1) * 100)));
+    const hasUnlimitedUsage = derived(() => data.usage.usageType === "unlimited");
+    const usagePercent = derived(() => hasUnlimitedUsage() ? 100 : Math.min(100, Math.round(data.usage.requestsUsed / Math.max(data.usage.requestsLimit ?? 1, 1) * 100)));
+    const usageMeta = derived(() => hasUnlimitedUsage() ? `${data.usage.requestsUsed} requests this month (unlimited)` : `${data.usage.requestsUsed} / ${data.usage.requestsLimit} requests`);
     $$renderer2.push(`<div class="dashboard-layout svelte-2agd5u"><aside class="sidebar svelte-2agd5u"><div class="sidebar-inner svelte-2agd5u"><div class="sidebar-header svelte-2agd5u"><a href="/dashboard" class="brand svelte-2agd5u">MetaRank</a> <p class="brand-sub svelte-2agd5u">Dashboard</p></div> <nav class="nav svelte-2agd5u"><!--[-->`);
     const each_array = ensure_array_like(nav);
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
@@ -71,7 +75,7 @@ function _layout($$renderer, $$props) {
         "active": isActive(store_get($$store_subs ??= {}, "$page", page).url.pathname, item.href)
       })}>${escape_html(item.label)}</a>`);
     }
-    $$renderer2.push(`<!--]--></nav> <div class="sidebar-usage svelte-2agd5u"><div class="usage-head svelte-2agd5u"><p class="usage-label svelte-2agd5u">Usage</p> <span class="usage-plan svelte-2agd5u">${escape_html(formatPlan(data.usage.plan))}</span></div> <div class="usage-bar svelte-2agd5u"><div class="usage-fill svelte-2agd5u"${attr_style(`width: ${usagePercent()}%`)}></div></div> <p class="usage-meta svelte-2agd5u">${escape_html(data.usage.requestsUsed)} / ${escape_html(data.usage.requestsLimit)} requests</p></div> <div class="sidebar-status svelte-2agd5u"><p class="usage-label svelte-2agd5u">Service status</p> <p class="usage-meta svelte-2agd5u">`);
+    $$renderer2.push(`<!--]--></nav> <div class="sidebar-usage svelte-2agd5u"><div class="usage-head svelte-2agd5u"><p class="usage-label svelte-2agd5u">Usage</p> <span class="usage-plan svelte-2agd5u">${escape_html(formatPlan(data.usage.plan))}</span></div> <div class="usage-bar svelte-2agd5u"><div class="usage-fill svelte-2agd5u"${attr_style(`width: ${usagePercent()}%`)}></div></div> <p class="usage-meta svelte-2agd5u">${escape_html(usageMeta())}</p></div> <div class="sidebar-status svelte-2agd5u"><p class="usage-label svelte-2agd5u">Service status</p> <p class="usage-meta svelte-2agd5u">`);
     ApiStatus($$renderer2);
     $$renderer2.push(`<!----></p></div></div></aside> <main class="content svelte-2agd5u"><div class="breadcrumb svelte-2agd5u"><span>Dashboard</span> `);
     if (getSectionLabel(store_get($$store_subs ??= {}, "$page", page).url.pathname)) {

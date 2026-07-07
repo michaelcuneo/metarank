@@ -1,5 +1,5 @@
 import "clsx";
-import { P as PUBLIC_CLERK_PUBLISHABLE_KEY } from "../../chunks/public.js";
+import { p as public_env } from "../../chunks/shared-server.js";
 import { d as derived, s as spread_props, a as attr_class, e as escape_html } from "../../chunks/index2.js";
 import { p as page } from "../../chunks/index3.js";
 import { B as Button } from "../../chunks/Button.js";
@@ -172,9 +172,10 @@ function Footer($$renderer, $$props) {
 function _layout($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     config.autoAddCss = false;
+    const publishableKey = public_env.PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
     let { children } = $$props;
     ClerkProvider_1($$renderer2, {
-      publishableKey: PUBLIC_CLERK_PUBLISHABLE_KEY,
+      publishableKey,
       children: ($$renderer3) => {
         $$renderer3.push(`<div class="app-shell svelte-12qhfyh">`);
         Header($$renderer3);
