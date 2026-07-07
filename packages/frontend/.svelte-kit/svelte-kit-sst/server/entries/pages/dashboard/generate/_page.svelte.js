@@ -124,9 +124,11 @@ function _page($$renderer, $$props) {
         apiKey("");
         return;
       }
-      apiKey(rawKeyStore[keyId] ?? "");
+      apiKey(rawKeyStore[keyId]?.trim() ?? "");
     }
+    const usableKeys = derived(() => data.keys.filter((key) => Boolean(rawKeyStore[key.keyId]?.trim())));
     const selectedKeyMeta = derived(() => data.keys.find((key) => key.keyId === selectedKeyId) ?? null);
+    const selectedKeyAvailableLocally = derived(() => Boolean(selectedKeyId && rawKeyStore[selectedKeyId]?.trim()));
     const curlExample = derived(() => `curl -X POST https://api.metarank.dev/v1/seo/meta \\
   -H "Authorization: Bearer ${apiKey() || "YOUR_API_KEY"}" \\
   -H "Content-Type: application/json" \\
@@ -134,8 +136,8 @@ function _page($$renderer, $$props) {
       {
         title: title(),
         body: body(),
-        location: location(),
-        targetQuery: targetQuery()
+        location: location() || void 0,
+        targetQuery: targetQuery() || void 0
       },
       null,
       2
@@ -149,8 +151,8 @@ function _page($$renderer, $$props) {
   body: JSON.stringify({
     title: ${JSON.stringify(title())},
     body: ${JSON.stringify(body())},
-    location: ${JSON.stringify(location())},
-    targetQuery: ${JSON.stringify(targetQuery())}
+    location: ${JSON.stringify(location() || void 0)},
+    targetQuery: ${JSON.stringify(targetQuery() || void 0)}
   })
 })
   .then(res => res.json())
@@ -181,7 +183,7 @@ function _page($$renderer, $$props) {
       Card($$renderer3, {
         class: "panel",
         children: ($$renderer4) => {
-          $$renderer4.push(`<h1 class="panel-title svelte-c61127">Generate metadata</h1> <p class="panel-subtext svelte-c61127">Test the live API using one of your keys.</p> <form method="POST" action="?/generate"><div class="optional svelte-c61127"><div class="field svelte-c61127"><label class="field-label svelte-c61127" for="key-select">Saved key</label> `);
+          $$renderer4.push(`<h1 class="panel-title svelte-c61127">Generate metadata</h1> <p class="panel-subtext svelte-c61127">Test the live API using one of your keys.</p> <form method="POST" action="?/generate"><div class="optional svelte-c61127"><div class="field svelte-c61127"><label class="field-label svelte-c61127" for="key-select">Saved key record</label> `);
           $$renderer4.select(
             {
               id: "key-select",
@@ -191,14 +193,15 @@ function _page($$renderer, $$props) {
             },
             ($$renderer5) => {
               $$renderer5.option({ value: "" }, ($$renderer6) => {
-                $$renderer6.push(`Select a key`);
+                $$renderer6.push(`Paste a key or choose one available on this device`);
               });
               $$renderer5.push(`<!--[-->`);
               const each_array = ensure_array_like(data.keys);
               for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
                 let key = each_array[$$index];
                 $$renderer5.option({ value: key.keyId }, ($$renderer6) => {
-                  $$renderer6.push(`${escape_html(key.name)} — ${escape_html(key.prefix)} • ${escape_html(formatDate(key.createdAt))}`);
+                  $$renderer6.push(`${escape_html(key.name)} — ${escape_html(key.prefix)} • ${escape_html(formatDate(key.createdAt))}
+									${escape_html(rawKeyStore[key.keyId]?.trim() ? " • available on this device" : " • paste required")}`);
                 });
               }
               $$renderer5.push(`<!--]-->`);
@@ -220,10 +223,18 @@ function _page($$renderer, $$props) {
             $$slots: { default: true }
           });
           $$renderer4.push(`<!----> `);
-          if (selectedKeyMeta() && !apiKey()) {
+          if (selectedKeyMeta() && !selectedKeyAvailableLocally()) {
             $$renderer4.push("<!--[-->");
-            $$renderer4.push(`<p class="helper-text svelte-c61127">This key is known by name, but the raw secret is not stored on the server.
-							Paste it manually unless it was created in this browser.</p>`);
+            $$renderer4.push(`<p class="helper-text svelte-c61127">This key exists on your account, but the full secret is not available on this
+							device. Paste the full API key to use it here, or create a new key on this device.</p>`);
+          } else {
+            $$renderer4.push("<!--[!-->");
+          }
+          $$renderer4.push(`<!--]--> `);
+          if (data.keys.length > 0 && usableKeys().length === 0) {
+            $$renderer4.push("<!--[-->");
+            $$renderer4.push(`<p class="helper-text svelte-c61127">No saved keys are available on this device yet. The dashboard can list key records,
+							but it cannot recover full API secrets from the server after creation.</p>`);
           } else {
             $$renderer4.push("<!--[!-->");
           }
@@ -297,7 +308,7 @@ function _page($$renderer, $$props) {
             Button($$renderer4, {
               type: "submit",
               variant: "primary",
-              disabled: body().length < 100 || !apiKey().trim(),
+              disabled: !title().trim() || !body().trim() || !apiKey().trim(),
               children: ($$renderer5) => {
                 $$renderer5.push(`<!---->Generate metadata`);
               },

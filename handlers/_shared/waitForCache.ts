@@ -15,7 +15,7 @@ export async function waitForCachedSeoMeta<T>(
 	const delayMs = options?.delayMs ?? 400;
 
 	for (let i = 0; i < attempts; i++) {
-		const cached = await getCachedSeoMeta<T>(cacheKey);
+		const cached = await getCachedSeoMeta(cacheKey);
 
 		if (cached) {
 			return cached;

@@ -73,13 +73,21 @@
 		});
 	}
 
-	function loadRawKeysFromStorage() {
+	function readRawKeyStore(): Record<string, string> {
 		try {
 			const stored = localStorage.getItem('metarank.rawApiKeys');
-			rawKeyStore = stored ? JSON.parse(stored) : {};
+			if (!stored) return {};
+
+			const parsed = JSON.parse(stored);
+			return parsed && typeof parsed === 'object' ? parsed : {};
 		} catch {
-			rawKeyStore = {};
+			return {};
 		}
+	}
+
+	function refreshRawKeyStore() {
+		if (typeof window === 'undefined') return;
+		rawKeyStore = readRawKeyStore();
 	}
 
 	function applySelectedKey(keyId: string) {
@@ -90,17 +98,34 @@
 			return;
 		}
 
-		apiKey = rawKeyStore[keyId] ?? '';
+		apiKey = rawKeyStore[keyId]?.trim() ?? '';
 	}
+
+	const usableKeys = $derived(
+		data.keys.filter((key: ApiKeyItem) => Boolean(rawKeyStore[key.keyId]?.trim()))
+	);
 
 	const selectedKeyMeta = $derived(
 		data.keys.find((key: ApiKeyItem) => key.keyId === selectedKeyId) ?? null
 	);
 
+	const selectedKeyAvailableLocally = $derived(
+		Boolean(selectedKeyId && rawKeyStore[selectedKeyId]?.trim())
+	);
+
 	const curlExample = $derived(`curl -X POST https://api.metarank.dev/v1/seo/meta \\
   -H "Authorization: Bearer ${apiKey || 'YOUR_API_KEY'}" \\
   -H "Content-Type: application/json" \\
-  -d '${JSON.stringify({ title, body, location, targetQuery }, null, 2)}'`);
+  -d '${JSON.stringify(
+		{
+			title,
+			body,
+			location: location || undefined,
+			targetQuery: targetQuery || undefined
+		},
+		null,
+		2
+	)}'`);
 
 	const jsExample = $derived(`fetch("https://api.metarank.dev/v1/seo/meta", {
   method: "POST",
@@ -111,8 +136,8 @@
   body: JSON.stringify({
     title: ${JSON.stringify(title)},
     body: ${JSON.stringify(body)},
-    location: ${JSON.stringify(location)},
-    targetQuery: ${JSON.stringify(targetQuery)}
+    location: ${JSON.stringify(location || undefined)},
+    targetQuery: ${JSON.stringify(targetQuery || undefined)}
   })
 })
   .then(res => res.json())
@@ -121,11 +146,31 @@
 	$effect(() => {
 		if (typeof window === 'undefined') return;
 
-		loadRawKeysFromStorage();
+		refreshRawKeyStore();
 
-		if (!selectedKeyId && data.keys.length > 0) {
-			applySelectedKey(data.keys[0].keyId);
+		if (!selectedKeyId) {
+			const firstAvailable = data.keys.find((key: ApiKeyItem) => rawKeyStore[key.keyId]?.trim());
+			if (firstAvailable) {
+				applySelectedKey(firstAvailable.keyId);
+			}
 		}
+	});
+
+	$effect(() => {
+		if (typeof window === 'undefined') return;
+
+		const onStorage = (event: StorageEvent) => {
+			if (event.key !== 'metarank.rawApiKeys') return;
+
+			refreshRawKeyStore();
+
+			if (selectedKeyId) {
+				apiKey = rawKeyStore[selectedKeyId]?.trim() ?? '';
+			}
+		};
+
+		window.addEventListener('storage', onStorage);
+		return () => window.removeEventListener('storage', onStorage);
 	});
 </script>
 
@@ -161,7 +206,7 @@
 			>
 				<div class="optional">
 					<div class="field">
-						<label class="field-label" for="key-select">Saved key</label>
+						<label class="field-label" for="key-select">Saved key record</label>
 						<select
 							id="key-select"
 							class="select"
@@ -169,10 +214,13 @@
 							onchange={(event) =>
 								applySelectedKey((event.currentTarget as HTMLSelectElement).value)}
 						>
-							<option value="">Select a key</option>
+							<option value="">Paste a key or choose one available on this device</option>
 							{#each data.keys as key}
 								<option value={key.keyId}>
 									{key.name} — {key.prefix} • {formatDate(key.createdAt)}
+									{rawKeyStore[key.keyId]?.trim()
+										? ' • available on this device'
+										: ' • paste required'}
 								</option>
 							{/each}
 						</select>
@@ -180,10 +228,17 @@
 
 					<Input bind:value={apiKey}>API key</Input>
 
-					{#if selectedKeyMeta && !apiKey}
+					{#if selectedKeyMeta && !selectedKeyAvailableLocally}
 						<p class="helper-text">
-							This key is known by name, but the raw secret is not stored on the server.
-							Paste it manually unless it was created in this browser.
+							This key exists on your account, but the full secret is not available on this
+							device. Paste the full API key to use it here, or create a new key on this device.
+						</p>
+					{/if}
+
+					{#if data.keys.length > 0 && usableKeys.length === 0}
+						<p class="helper-text">
+							No saved keys are available on this device yet. The dashboard can list key records,
+							but it cannot recover full API secrets from the server after creation.
 						</p>
 					{/if}
 				</div>
@@ -218,7 +273,7 @@
 						<Button
 							type="submit"
 							variant="primary"
-							disabled={body.length < 100 || !apiKey.trim()}
+							disabled={!title.trim() || !body.trim() || !apiKey.trim()}
 						>
 							Generate metadata
 						</Button>

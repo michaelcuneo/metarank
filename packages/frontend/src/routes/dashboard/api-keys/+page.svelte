@@ -40,23 +40,51 @@
 	let revokingKeyId = $state<string | null>(null);
 	let createdKey = $derived<CreatedKey | null>(form?.createdKey ?? null);
 
-	function storeRawKey(created: CreatedKey) {
+	const createError = $derived(form?.createError ?? '');
+	const revokeError = $derived(form?.revokeError ?? '');
+
+	function readRawKeyStore(): Record<string, string> {
 		try {
-			const existing = JSON.parse(localStorage.getItem('metarank.rawApiKeys') ?? '{}');
-			existing[created.keyId] = created.key;
-			localStorage.setItem('metarank.rawApiKeys', JSON.stringify(existing));
+			const raw = localStorage.getItem('metarank.rawApiKeys');
+			if (!raw) return {};
+
+			const parsed = JSON.parse(raw);
+			return parsed && typeof parsed === 'object' ? parsed : {};
+		} catch {
+			return {};
+		}
+	}
+
+	function writeRawKeyStore(store: Record<string, string>) {
+		try {
+			localStorage.setItem('metarank.rawApiKeys', JSON.stringify(store));
 		} catch {
 			// ignore storage errors
 		}
+	}
+
+	function storeRawKey(created: CreatedKey) {
+		if (typeof window === 'undefined') return;
+		if (!created.keyId || !created.key?.trim()) return;
+
+		const store = readRawKeyStore();
+		store[created.keyId] = created.key.trim();
+		writeRawKeyStore(store);
+	}
+
+	function removeRawKey(keyId: string) {
+		if (typeof window === 'undefined') return;
+		if (!keyId) return;
+
+		const store = readRawKeyStore();
+		delete store[keyId];
+		writeRawKeyStore(store);
 	}
 
 	async function copyCreatedKey() {
 		if (!createdKey?.key) return;
 		await navigator.clipboard.writeText(createdKey.key);
 	}
-
-	const createError = $derived(form?.createError ?? '');
-	const revokeError = $derived(form?.revokeError ?? '');
 
 	const keys = $derived(() => {
 		if (!form?.revokedKeyId) {
@@ -150,6 +178,9 @@
 						<p class="created-note">
 							Copy this now. You will not be able to see it again.
 						</p>
+						<p class="created-note">
+							This key has also been saved in this browser for dashboard testing.
+						</p>
 					</div>
 
 					<Button size="sm" variant="ghost" onclick={copyCreatedKey}>
@@ -219,9 +250,17 @@
 											use:enhance={() => {
 												revokingKeyId = key.keyId;
 
-												return async ({ update }) => {
+												return async ({ result, update }) => {
 													revokingKeyId = null;
 													await update();
+
+													if (result.type === 'success') {
+														const data = result.data as ActionData | undefined;
+														if (data?.revokedKeyId) {
+															removeRawKey(data.revokedKeyId);
+														}
+													}
+
 													await invalidateAll();
 												};
 											}}

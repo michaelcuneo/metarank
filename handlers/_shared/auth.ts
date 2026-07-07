@@ -8,15 +8,9 @@ function hashApiKey(rawKey: string): string {
 }
 
 export async function requireApiKeyUser(event: any) {
-	const auth =
-		event.headers?.authorization ??
-		event.headers?.Authorization;
+	const auth = event.headers?.authorization ?? event.headers?.Authorization ?? '';
 
-	if (!auth?.startsWith('Bearer ')) {
-		throw new Error('Invalid API key');
-	}
-
-	const rawKey = auth.slice('Bearer '.length).trim();
+	const rawKey = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length).trim() : auth.trim();
 
 	if (!rawKey.startsWith('mrk_')) {
 		throw new Error('Invalid API key');

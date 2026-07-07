@@ -15,12 +15,12 @@ function _page($$renderer, $$props) {
     let creating = false;
     let revokingKeyId = null;
     let createdKey = derived(() => form?.createdKey ?? null);
+    const createError = derived(() => form?.createError ?? "");
+    const revokeError = derived(() => form?.revokeError ?? "");
     async function copyCreatedKey() {
       if (!createdKey()?.key) return;
       await navigator.clipboard.writeText(createdKey().key);
     }
-    const createError = derived(() => form?.createError ?? "");
-    const revokeError = derived(() => form?.revokeError ?? "");
     const keys = derived(() => () => {
       if (!form?.revokedKeyId) {
         return data.keys;
@@ -75,7 +75,7 @@ function _page($$renderer, $$props) {
         $$renderer3.push(`<!--]--> `);
         if (createdKey()) {
           $$renderer3.push("<!--[-->");
-          $$renderer3.push(`<div class="created-key svelte-4e8etr"><div class="created-key-header svelte-4e8etr"><div><p class="created-label svelte-4e8etr">New API key</p> <p class="created-note svelte-4e8etr">Copy this now. You will not be able to see it again.</p></div> `);
+          $$renderer3.push(`<div class="created-key svelte-4e8etr"><div class="created-key-header svelte-4e8etr"><div><p class="created-label svelte-4e8etr">New API key</p> <p class="created-note svelte-4e8etr">Copy this now. You will not be able to see it again.</p> <p class="created-note svelte-4e8etr">This key has also been saved in this browser for dashboard testing.</p></div> `);
           Button($$renderer3, {
             size: "sm",
             variant: "ghost",
